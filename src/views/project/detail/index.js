@@ -28,7 +28,6 @@ const ProjectDetail = () => {
 				<Col md="5">
 				</Col>
 			</Row>
-
 			<Row>
 				<Col md="7">
 					<ProjectInfo />
