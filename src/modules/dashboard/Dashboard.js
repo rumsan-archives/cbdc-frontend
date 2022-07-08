@@ -113,15 +113,6 @@ const Dashboard = () => {
 						data={stats.totalVendors}
 					/>
 				</Col>
-				<Col md="3">
-					<StatsCard
-						title="Mobilizers"
-						title_color="#F7C087"
-						icon_color="#F7C087"
-						icon_name="fas fa-dollar-sign"
-						data={stats.totalMobilizers}
-					/>
-				</Col>
 			</Row>
 			<Row>
 				<Col md="8">
