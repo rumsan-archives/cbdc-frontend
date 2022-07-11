@@ -40,51 +40,21 @@ export default function Index(props) {
 		<div>
 			<Card>
 				<div style={{ padding: 20 }}>
-					<span className="custom-label">Tokens</span>
+					<span className="custom-label">CBDC Pool</span>
 					<br />
 					<div className="flex-container">
 						<div className="flex-item">
 							<p className="token-counts">{formatBalanceAndCurrency(releasedToken)}</p>
-							<span className="token-label">Total released</span>
+							<span className="token-label">Allocated</span>
 						</div>
 						<div className="flex-item "></div>
 						<div className="flex-item v-border"></div>
 						<div className="flex-item">
 							<p className="token-counts">{formatBalanceAndCurrency(redeemedTokens)}</p>
-							<p className="token-label">Total redeem</p>
+							<p className="token-label">Remaining</p>
 						</div>
 					</div>
 				</div>
-			</Card>
-			<Card>
-				<CardBody>
-					<div style={{ display: 'flex', justifyContent: 'space-between' }}>
-						<CardTitle>Beneficiaries by project ({data.length})</CardTitle>
-						<div>
-							{exportData.length ? (
-								<ExportToExcel apiData={exportData} fileName="Beneficiaries-by-project-report.xlsx" />
-							) : (
-								''
-							)}
-						</div>
-					</div>
-					<div className="chart-wrapper" style={{ width: '100%', margin: 10, height: 230 }}>
-						<Pie
-							data={pieData}
-							options={{
-								maintainAspectRatio: false,
-								legend: {
-									display: true,
-									position: 'bottom',
-									labels: {
-										fontFamily: 'Be Vietnam',
-										fontColor: '#9B9B9B'
-									}
-								}
-							}}
-						/>
-					</div>
-				</CardBody>
 			</Card>
 		</div>
 	);
