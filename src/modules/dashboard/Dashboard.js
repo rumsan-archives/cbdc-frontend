@@ -105,27 +105,26 @@ const Dashboard = () => {
 					/>
 				</Col>
 				<Col md="3">
-					<StatsCard
-						title="Vendors"
-						title_color="#F49786"
-						icon_color="#F49786"
-						icon_name="fas fa-anchor"
-						data={stats.totalVendors}
-					/>
+					<BeneficiaryByProject
+							releasedToken={stats.totalAllocation}
+							redeemedTokens={stats.redeemedTokens}
+							data={stats.beneficiariesByProject}
+							exportData={exportData.benef_by_project || []}
+						/>
 				</Col>
 			</Row>
 			<Row>
-				<Col md="8">
+				<Col md="12">
 					<TokenByProject data={stats.tokensByProject} exportData={exportData.tokens_by_project || []} />
 				</Col>
-				<Col md="4">
+				{/* <Col md="4">
 					<BeneficiaryByProject
 						releasedToken={stats.totalAllocation}
 						redeemedTokens={stats.redeemedTokens}
 						data={stats.beneficiariesByProject}
 						exportData={exportData.benef_by_project || []}
 					/>
-				</Col>
+				</Col> */}
 			</Row>
 		</>
 	);

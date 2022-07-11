@@ -65,7 +65,7 @@ const Index = props => {
 			<Card>
 				<CardBody>
 					<div style={{ display: 'flex', justifyContent: 'space-between' }}>
-						<CardTitle>Tokens by project</CardTitle>
+						<CardTitle>Projects With Total Allocated CBDC</CardTitle>
 						<div>
 							{exportData.length ? <ExportToExcel apiData={exportData} fileName="Tokens-by-project-report.xlsx" /> : ''}
 						</div>
