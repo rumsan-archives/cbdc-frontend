@@ -64,10 +64,10 @@ export default function Balance(props) {
 							{fetching ? <Loading /> : <p className="card-font-bold">{formatBalanceAndCurrency(token_data) || '0'}</p>}
 
 							<div style={{ marginTop: 0 }} className="sub-title">
-								Tokens
+								Tokens Remaining
 							</div>
 						</Col>
-						<Col>
+						{/* <Col>
 							{fetching ? (
 								<Loading />
 							) : (
@@ -81,7 +81,7 @@ export default function Balance(props) {
 							<div style={{ marginTop: 0 }} className="sub-title">
 								Package
 							</div>
-						</Col>
+						</Col> */}
 					</Row>
 				</div>
 			</Card>

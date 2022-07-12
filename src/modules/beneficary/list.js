@@ -31,7 +31,7 @@ const Beneficiary = () => {
 	});
 	const [selectedProject, setSelectedProject] = useState('');
 
-	const { listBeneficiary, projectList, getBeneficiariesBalances,getBenfPackageBalances } = useContext(BeneficiaryContext);
+	const { listBeneficiary, projectList, getBeneficiariesBalances, getBenfPackageBalances } = useContext(BeneficiaryContext);
 	const { appSettings } = useContext(AppContext);
 	const handleFilterOptionChange = e => {
 		let { value } = e.target;
@@ -62,6 +62,7 @@ const Beneficiary = () => {
 		const { value } = e.target;
 		setSearchValue(value);
 		if (filter.searchBy === SEARCH_OPTIONS.PHONE) {
+			console.log({ value })
 			return fetchList({ start: 0, limit: PAGE_LIMIT, phone: value });
 		}
 		if (filter.searchBy === SEARCH_OPTIONS.NAME) {
@@ -74,7 +75,7 @@ const Beneficiary = () => {
 		fetchList({ start: 0, limit: PAGE_LIMIT });
 	};
 
-	const appendBeneficiaryBalances = useCallback(({ beneficiaries, tokenBalances,packageBalances }) => {
+	const appendBeneficiaryBalances = useCallback(({ beneficiaries, tokenBalances, packageBalances }) => {
 		const beneficiariesWithTokens = beneficiaries.map((ben, i) => {
 			ben.tokenBalance = tokenBalances[i];
 			ben.packageBalance = packageBalances[i].grandTotal
@@ -90,15 +91,16 @@ const Beneficiary = () => {
 			const { agency } = appSettings;
 			setfetchingBeneficiaryTokens(true);
 			const tokenBalances = await getBeneficiariesBalances(beneficiaries, agency.contracts.rahat);
-			const packageBalances = await getBenfPackageBalances (beneficiaries,agency.contracts.rahat);
-			if (tokenBalances.length) await appendBeneficiaryBalances({ beneficiaries, tokenBalances,packageBalances });
+			const packageBalances = await getBenfPackageBalances(beneficiaries, agency.contracts.rahat);
+			if (tokenBalances.length) await appendBeneficiaryBalances({ beneficiaries, tokenBalances, packageBalances });
 		},
-		[appSettings, getBeneficiariesBalances, appendBeneficiaryBalances,getBenfPackageBalances]
+		[appSettings, getBeneficiariesBalances, appendBeneficiaryBalances, getBenfPackageBalances]
 	);
 
 	const fetchList = useCallback(
 		async params => {
 			let query = { start: 0, limit: PAGE_LIMIT, ...params };
+			console.log({ query })
 			const { data, total } = await listBeneficiary(query);
 			setBenfList(data);
 			//fetchBeneficiariesBalances({beneficiaries:data});
@@ -144,7 +146,8 @@ const Beneficiary = () => {
 			setCurrentPage(currentPage);
 			let start = (currentPage - 1) * pageLimit;
 			const query = { start, limit: PAGE_LIMIT, ...params };
-			const {data} = await listBeneficiary(query);
+			console.log({ query })
+			const { data } = await listBeneficiary(query);
 			setBenfList(data);
 			fetchBeneficiariesBalances({ beneficiaries: data });
 		},
@@ -260,14 +263,14 @@ const Beneficiary = () => {
 													) : d.tokenBalance || d.issued_packages ? (
 														<>
 															<span className="badge badge-success p-2 mb-1">
-																{formatBalanceAndCurrency(d.tokenBalance)} Tokens
+																{formatBalanceAndCurrency(d.tokenBalance)}
 															</span>
 															<br />
-															<span className="badge bg-light text-dark p-2">
+															{/* <span className="badge bg-light text-dark p-2">
 																Rs. {formatBalanceAndCurrency(
 																	d.packageBalance
 																)} Packages
-															</span>
+															</span> */}
 														</>
 													) : (
 														<span className="badge bg-light text-dark p-2">0 Tokens</span>

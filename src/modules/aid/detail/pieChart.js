@@ -12,10 +12,10 @@ export default function Chart({ available_tokens, total_tokens, total_package, a
 	const { addToast } = useToasts();
 
 	const pieDataToken = {
-		labels: ['Available', 'Issued', 'Used', 'Redeemed',],
+		labels: ['Remaining', 'Disbursed'],
 		datasets: [
 			{
-				data: [available_tokens, total_tokens - available_tokens, 0, 0],
+				data: [available_tokens, total_tokens - available_tokens],
 				backgroundColor: ['#2b7ec1', '#fd7e14'],
 				hoverBackgroundColor: ['#2b7ec1', '#fd7e14']
 			}
@@ -23,10 +23,10 @@ export default function Chart({ available_tokens, total_tokens, total_package, a
 	};
 
 	const pieDataPackage = {
-		labels: ['Available','Issued'],
+		labels: ['Available', 'Issued'],
 		datasets: [
 			{
-				data: [available_package,total_package - available_package],
+				data: [available_package, total_package - available_package],
 				backgroundColor: ['#2b7ec1', '#fd7e14'],
 				hoverBackgroundColor: ['#2b7ec1', '#fd7e14']
 			}
@@ -83,7 +83,7 @@ export default function Chart({ available_tokens, total_tokens, total_package, a
 									}}
 								/>
 							</div>
-							<div
+							{/* <div
 								className="chart-wrapper"
 								style={{ width: '100%', marginBottom: '40px', marginTop: '40px', height: 160 }}
 							>
@@ -102,7 +102,7 @@ export default function Chart({ available_tokens, total_tokens, total_package, a
 										}
 									}}
 								/>
-							</div>
+							</div> */}
 						</div>
 					)}
 				</CardBody>

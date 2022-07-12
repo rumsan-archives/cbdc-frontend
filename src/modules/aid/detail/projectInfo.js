@@ -52,7 +52,7 @@ export default function ProjectInfo({ projectDetails }) {
 				open={qrGenModal}
 				title="Pre-Generate Qr-Code"
 				handleSubmit={handleQrGenSubmit}
-				// loading={qrGenLoading}
+			// loading={qrGenLoading}
 			>
 				<FormGroup>
 					<Label>Number of Qr-code</Label>
@@ -88,14 +88,14 @@ export default function ProjectInfo({ projectDetails }) {
 						</Col>
 						<Col>
 							<div style={{ flex: 1, padding: 2, float: 'right' }}>
-								<button
+								{/* <button
 									onClick={toggleQrGen}
 									type="button"
 									className="btn waves-effect waves-light btn-outline-info"
 									style={{ borderRadius: '8px', marginRight: '20px' }}
 								>
 									Pre-Generate Qr code
-								</button>
+								</button> */}
 								<button
 									type="button"
 									onClick={handleEditClick}

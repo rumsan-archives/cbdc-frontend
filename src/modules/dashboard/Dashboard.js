@@ -89,6 +89,7 @@ const Dashboard = () => {
 				<Col md="3">
 					<StatsCard
 						title="Projects"
+						subTitle="Total Projects"
 						title_color="#2b7ec1"
 						icon_color="#2b7ec1"
 						icon_name="fas fa-clone"
@@ -98,6 +99,7 @@ const Dashboard = () => {
 				<Col md="3">
 					<StatsCard
 						title="Beneficiaries"
+						subTitle="Total Beneficiaries"
 						title_color="#80D5AA"
 						icon_color="#80D5AA"
 						icon_name="fas fa-users"
@@ -106,11 +108,11 @@ const Dashboard = () => {
 				</Col>
 				<Col md="3">
 					<BeneficiaryByProject
-							releasedToken={stats.totalAllocation}
-							redeemedTokens={stats.redeemedTokens}
-							data={stats.beneficiariesByProject}
-							exportData={exportData.benef_by_project || []}
-						/>
+						releasedToken={stats.totalAllocation}
+						redeemedTokens={stats.redeemedTokens}
+						data={stats.beneficiariesByProject}
+						exportData={exportData.benef_by_project || []}
+					/>
 				</Col>
 			</Row>
 			<Row>

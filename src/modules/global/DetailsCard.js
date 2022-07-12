@@ -53,14 +53,15 @@ export default function DetailsCard(props) {
 										onChange={handleSwitchChange}
 									/>
 								) : (
-									<button
-										onClick={handleButtonClick}
-										type="button"
-										className="btn waves-effect waves-light btn-outline-info"
-										style={{ borderRadius: '8px' }}
-									>
-										{button_name || 'button'}
-									</button>
+									''
+									// <button
+									// 	onClick={handleButtonClick}
+									// 	type="button"
+									// 	className="btn waves-effect waves-light btn-outline-info"
+									// 	style={{ borderRadius: '8px' }}
+									// >
+									// 	{button_name || 'button'}
+									// </button>
 								)}
 							</div>
 						</Col>

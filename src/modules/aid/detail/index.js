@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState, useCallback } from 'react';
-import {Row, Col, Tooltip} from 'reactstrap';
+import { Row, Col, Tooltip } from 'reactstrap';
 import { useToasts } from 'react-toast-notifications';
 
 import { AidContext } from '../../../contexts/AidContext';
@@ -9,10 +9,10 @@ import ProjectInfo from './projectInfo';
 import PieChart from './pieChart';
 // import BarChart from './barChart';
 import Tabs from './tab';
-import {TOAST, PROJECT_STATUS, ROLES} from '../../../constants';
+import { TOAST, PROJECT_STATUS, ROLES } from '../../../constants';
 import BreadCrumb from '../../ui_components/breadcrumb';
-import {getUser} from "../../../utils/sessionManager";
-import {useHistory} from "react-router-dom";
+import { getUser } from "../../../utils/sessionManager";
+import { useHistory } from "react-router-dom";
 import API from "../../../constants/api";
 // import Balance from '../../ui_components/balance';
 
@@ -38,7 +38,7 @@ export default function Index(props) {
 	const [projectDetails, setProjectDetails] = useState(null);
 	const [fetchingBlockchain, setFetchingBlockchain] = useState(false);
 	const [totalFiatBalance, setTotalFiatBalance] = useState(0);
-	const [totalRemainingFiatBalance,setTotalRemainingFiatBalance] = useState(0)
+	const [totalRemainingFiatBalance, setTotalRemainingFiatBalance] = useState(0)
 
 	const handleStatusChange = status => {
 		const success_label = status === PROJECT_STATUS.CLOSED ? 'Closed' : 'Activated';
@@ -91,7 +91,7 @@ export default function Index(props) {
 
 	const handleCampaignClick = () => {
 		window.open(`${API.FUNDRAISER_FUNDRAISE}/${projectDetails.campaignId}`, '_blank');
-		}
+	}
 	const handleClick = () => {
 		const currentUser = getUser();
 		const isManager = currentUser && currentUser.roles.includes(ROLES.MANAGER);
@@ -101,7 +101,7 @@ export default function Index(props) {
 	};
 
 	const [toolTipOpen, setToolTipOpen] = useState(false);
-	const toggleToolTip = ()  =>{
+	const toggleToolTip = () => {
 		setToolTipOpen(!toolTipOpen);
 	}
 	return (
@@ -109,27 +109,10 @@ export default function Index(props) {
 			<Row>
 				<Col md="9">
 					<p className="page-heading">Projects</p>
-					<BreadCrumb redirect_path="projects" root_label="Projects" current_label="Details"/>
+					<BreadCrumb redirect_path="projects" root_label="Projects" current_label="Details" />
 				</Col>
 
-				<Col md="3">
-					{projectDetails && projectDetails.campaignId &&
-						(<>
-								<Tooltip placement="right" isOpen={toolTipOpen} toggle={toggleToolTip} target="viewCampaignFundraiser">{projectDetails.campaignTitle}</Tooltip>
-								<button id = "viewCampaignFundraiser" onClick={handleCampaignClick} type="button"
-										className="btn waves-effect waves-light btn-outline-info"
-										style={{borderRadius: '8px', minWidth:'12px'}}>View Campaign
-								</button>
-						</>
 
-							)}
-					{projectDetails && projectDetails.campaignId == null &&
-						<button onClick={handleClick} type="button"
-								className="btn waves-effect waves-light btn-outline-info"
-								style={{borderRadius: '8px'}}> Add Campaign
-						</button>
-					}
-				</Col>
 			</Row>
 			<Row>
 				<Col md="7">
@@ -155,7 +138,7 @@ export default function Index(props) {
 							available_tokens={available_tokens}
 							total_tokens={total_tokens}
 							total_package={totalFiatBalance}
-							available_package = {totalRemainingFiatBalance}
+							available_package={totalRemainingFiatBalance}
 							projectStatus={projectDetails.status}
 							projectId={id}
 						/>
