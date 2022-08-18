@@ -17,7 +17,7 @@ export default function ProjectsInvolved(props) {
 			<Card>
 				<div className="stat-card-body" style={{ minHeight: 120 }}>
 					<CardTitle className="title" style={{ flexBasis: '90%' }}>
-						Projects Involved &nbsp;
+						Program Involved &nbsp;
 						{showAddBtn && (
 							<a href="#add_project" onClick={handleAddBtnClick} title="Add project">
 								<i className="fas fa-plus"></i>

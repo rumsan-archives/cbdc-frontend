@@ -52,7 +52,7 @@ export default function ProjectInfo({ projectDetails }) {
 				open={qrGenModal}
 				title="Pre-Generate Qr-Code"
 				handleSubmit={handleQrGenSubmit}
-			// loading={qrGenLoading}
+				// loading={qrGenLoading}
 			>
 				<FormGroup>
 					<Label>Number of Qr-code</Label>
@@ -113,7 +113,7 @@ export default function ProjectInfo({ projectDetails }) {
 								<p className="card-font-medium">
 									{project_manager ? `${project_manager.name.first} ${project_manager.name.last}` : '-'}
 								</p>
-								<div className="sub-title">Project Manager</div>
+								<div className="sub-title">Program Manager</div>
 							</div>
 							<div style={{ marginBottom: '25px' }}>
 								<p className="card-font-medium">{location || '-'}</p>

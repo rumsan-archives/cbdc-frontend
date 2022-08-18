@@ -160,7 +160,7 @@ const List = () => {
 			</AidModal>
 			<Card>
 				<CardTitle className="mb-0 pt-3">
-					<span style={{ paddingLeft: 26 }}>Projects</span>
+					<span style={{ paddingLeft: 26 }}>Programs</span>
 				</CardTitle>
 				<CardTitle className="mb-0 p-3">
 					<div className="toolbar-flex-container">
@@ -225,7 +225,6 @@ const List = () => {
 												) : (
 													<>
 														<span className="badge badge-success p-2 mb-1">{d.tokenBalance || 0} </span>
-
 													</>
 												)}
 											</td>

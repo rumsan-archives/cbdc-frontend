@@ -13573,18 +13573,6 @@ rsvp@^4.8.4:
   resolved "https://registry.yarnpkg.com/rsvp/-/rsvp-4.8.5.tgz#c8f155311d167f68f21e168df71ec5b083113734"
   integrity sha512-nfMOlASu9OnRJo1mbEk2cz0D56a1MBNrJ7orjRZQG10XDyuvwksKbuXNp6qa+kbn839HwjwhBzhFmdsaEAfauA==
 
-rumsan-core@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/rumsan-core/-/rumsan-core-1.0.1.tgz#5b86c1fa08b3c97eb78b8f603090982627f438bd"
-  integrity sha512-UkPhM2idH0Ajasj7XvM7WxvfcFM47F2c5KKgje7YwNYmrUyKcg+REKk0SN7g0vBmfenNGUKX/UqTxDmu9fN22A==
-
-rumsan-ui@^1.0.11:
-  version "1.0.11"
-  resolved "https://registry.yarnpkg.com/rumsan-ui/-/rumsan-ui-1.0.11.tgz#295f14c9dfc9537f8122941fbddb04127246c067"
-  integrity sha512-nRZSU9npVB0TlOYp4bZhH3/U+6950ThyIM8mznl1uchjTJBS+5Y9lnAs8tKLrRnkXuAb2OiICt17bqEUw5gTiw==
-  dependencies:
-    rumsan-core "^1.0.1"
-
 run-async@^2.2.0, run-async@^2.4.0:
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/run-async/-/run-async-2.4.1.tgz#8440eccf99ea3e70bd409d49aab88e10c189a455"

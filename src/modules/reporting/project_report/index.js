@@ -372,7 +372,7 @@ const ProjectReport = () => {
 										color: '#F7C087'
 									}}
 								>
-									Please select project to get reports{' '}
+									Please select Program to get reports{' '}
 								</span>
 							) : (
 								<div>

@@ -39,19 +39,21 @@ export default function Index(props) {
 	return (
 		<div>
 			<Card>
-				<div style={{ padding: 20 }}>
+				<div className="card-body">
 					<span className="custom-label">CBDC Pool</span>
 					<br />
-					<div className="flex-container">
-						<div className="flex-item">
-							<p className="token-counts">{formatBalanceAndCurrency(releasedToken)}</p>
-							<span className="token-label">Allocated</span>
-						</div>
-						<div className="flex-item "></div>
-						<div className="flex-item v-border"></div>
-						<div className="flex-item">
-							<p className="token-counts">{formatBalanceAndCurrency(redeemedTokens)}</p>
-							<p className="token-label">Remaining</p>
+					<div className="mt-3">
+						<div style={{ display: 'flex', justifyContent: 'space-between' }}>
+							<h2 style={{ flexBasis: '75%' }} className="card-font-medium">
+								{formatBalanceAndCurrency(releasedToken)}
+								<p className="token-label">Allocated</p>
+							</h2>
+							<div className="flex"></div>
+							<div className="flex-item v-border"></div>
+							<h2 style={{ flexBasis: '25%' }} className="card-font-medium">
+								{formatBalanceAndCurrency(redeemedTokens)}
+								<p className="token-label">Remaining</p>
+							</h2>
 						</div>
 					</div>
 				</div>

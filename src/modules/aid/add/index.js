@@ -1,6 +1,21 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useToasts } from 'react-toast-notifications';
-import { Card, CardBody, Row, Col, Form, FormGroup, Label, Input, Button, InputGroup, ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import {
+	Card,
+	CardBody,
+	Row,
+	Col,
+	Form,
+	FormGroup,
+	Label,
+	Input,
+	Button,
+	InputGroup,
+	ButtonDropdown,
+	DropdownToggle,
+	DropdownMenu,
+	DropdownItem
+} from 'reactstrap';
 
 import { TOAST, APP_CONSTANTS, ROLES } from '../../../constants';
 import { AidContext } from '../../../contexts/AidContext';
@@ -11,8 +26,17 @@ import SelectWrapper from '../../global/SelectWrapper';
 import GrowSpinner from '../../../modules/global/GrowSpinner';
 import BreadCrumb from '../../ui_components/breadcrumb';
 
-const timeDuration = [{ name: 'Week', days: 7 }, { name: 'Month', days: 30 }, { name: 'Year', days: 365 }];
-const timePeriod = [{ name: 'Daily', days: 1 }, { name: 'Weekly', days: 7 }, { name: 'Monthly', days: 30 }, { name: 'Yearly', days: 365 }];
+const timeDuration = [
+	{ name: 'Week', days: 7 },
+	{ name: 'Month', days: 30 },
+	{ name: 'Year', days: 365 }
+];
+const timePeriod = [
+	{ name: 'Daily', days: 1 },
+	{ name: 'Weekly', days: 7 },
+	{ name: 'Monthly', days: 30 },
+	{ name: 'Yearly', days: 365 }
+];
 
 const AddProject = () => {
 	const { addToast } = useToasts();
@@ -43,20 +67,19 @@ const AddProject = () => {
 
 	const togglePeriodDropDown = () => setPeriodDropdownOpen(!periodDropdownOpen);
 
-	const changeProjectDuration = (el) => {
-		setProjectDuration(el)
+	const changeProjectDuration = el => {
+		setProjectDuration(el);
 	};
 
-	const changeDisbursementPeriod = (el) => {
-		setDisbursementPeriod(el)
+	const changeDisbursementPeriod = el => {
+		setDisbursementPeriod(el);
 	};
 
-	const changeDisbursementAmount = (e) => {
+	const changeDisbursementAmount = e => {
 		const projectDurationInDays = disbursementTime * projectDuration.days;
 		const numberOfDisbursements = projectDurationInDays / disbursementPeriod.days;
-		setRequiredToken(e.target.value * numberOfDisbursements)
-
-	}
+		setRequiredToken(e.target.value * numberOfDisbursements);
+	};
 
 	const handleInputChange = e => {
 		setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -77,20 +100,20 @@ const AddProject = () => {
 
 	const handleFormSubmit = e => {
 		e.preventDefault();
-		if (!selectedManager) return addToast('Please select project manager', TOAST.ERROR);
+		if (!selectedManager) return addToast('Please select program manager', TOAST.ERROR);
 		const form_payload = createFormData(formData);
 		setLoading(true);
 		addAid(form_payload)
 			.then(res => {
 				setLoading(false);
-				addToast(`Project created with ${res.uploaded_beneficiaries} beneficiary upload`, TOAST.SUCCESS);
+				addToast(`program created with ${res.uploaded_beneficiaries} beneficiary upload`, TOAST.SUCCESS);
 				History.push('/projects');
 			})
 			.catch(err => {
 				setLoading(false);
 				let err_msg = err.message;
 				if (err_msg === 'Request failed with status code 500') {
-					addToast('Project has been created', TOAST.SUCCESS);
+					addToast('program has been created', TOAST.SUCCESS);
 					err_msg = 'Upload failed due to duplicate data!';
 					addToast(err_msg, TOAST.ERROR);
 					History.push('/projects');
@@ -138,8 +161,8 @@ const AddProject = () => {
 
 	return (
 		<div>
-			<p className="page-heading">Projects</p>
-			<BreadCrumb redirect_path="projects" root_label="Projects" current_label="Add" />
+			<p className="page-heading">Programs</p>
+			<BreadCrumb redirect_path="projects" root_label="Programs" current_label="Add" />
 
 			<Row>
 				<Col md="12">
@@ -147,12 +170,12 @@ const AddProject = () => {
 						<CardBody>
 							<Form onSubmit={handleFormSubmit} style={{ color: '#6B6C72' }}>
 								<FormGroup>
-									<Label>Project Name</Label>
+									<Label>Program Name</Label>
 									<Input type="text" value={formData.name} name="name" onChange={handleInputChange} required />
 								</FormGroup>
 
 								<FormGroup>
-									<Label>Project Manager</Label>
+									<Label>Program Manager</Label>
 									<SelectWrapper
 										id="project_manager"
 										onChange={handleProjectManagerChange}
@@ -168,7 +191,6 @@ const AddProject = () => {
 									<Input type="text" value={formData.location} name="location" onChange={handleInputChange} required />
 								</FormGroup>
 
-
 								<FormGroup>
 									<Label>Description</Label>
 									<Input
@@ -183,15 +205,18 @@ const AddProject = () => {
 								<Row>
 									<Col md="6" sm="12">
 										<FormGroup>
-											<Label>Project Period</Label>
+											<Label>Program Period</Label>
 											<InputGroup>
-												<Input type='number' onChange={(e) => setDisbursementTime(e.target.value)} />
+												<Input type="number" onChange={e => setDisbursementTime(e.target.value)} />
 												<ButtonDropdown isOpen={timeDropdownOpen} toggle={toggleTimeDropDown}>
-													<DropdownToggle caret>
-														{projectDuration?.name || 'Time'}
-													</DropdownToggle>
+													<DropdownToggle caret>{projectDuration?.name || 'Time'}</DropdownToggle>
 													<DropdownMenu>
-														{timeDuration.map((el, i) => <DropdownItem key={i} onClick={() => changeProjectDuration(el)}> {el.name}</DropdownItem>)}
+														{timeDuration.map((el, i) => (
+															<DropdownItem key={i} onClick={() => changeProjectDuration(el)}>
+																{' '}
+																{el.name}
+															</DropdownItem>
+														))}
 													</DropdownMenu>
 												</ButtonDropdown>
 											</InputGroup>
@@ -203,26 +228,27 @@ const AddProject = () => {
 											<Label>Token Disbursement</Label>
 											<InputGroup>
 												<ButtonDropdown isOpen={periodDropdownOpen} toggle={togglePeriodDropDown}>
-													<DropdownToggle caret>
-														{disbursementPeriod?.name || 'Period'}
-													</DropdownToggle>
+													<DropdownToggle caret>{disbursementPeriod?.name || 'Period'}</DropdownToggle>
 													<DropdownMenu>
-														{timePeriod.map((el, i) => <DropdownItem key={i} onClick={() => changeDisbursementPeriod(el)}> {el.name}</DropdownItem>)}
-
+														{timePeriod.map((el, i) => (
+															<DropdownItem key={i} onClick={() => changeDisbursementPeriod(el)}>
+																{' '}
+																{el.name}
+															</DropdownItem>
+														))}
 													</DropdownMenu>
 												</ButtonDropdown>
-												<Input placeholder="Disbursement Amount" type='number' onChange={changeDisbursementAmount} />
+												<Input placeholder="Disbursement Amount" type="number" onChange={changeDisbursementAmount} />
 											</InputGroup>
 										</FormGroup>
 									</Col>
-
 								</Row>
 
 								<FormGroup>
-									<Label>Total Required Token: <strong>{requiredToken}</strong></Label>
-
+									<Label>
+										Total Required Token: <strong>{requiredToken}</strong>
+									</Label>
 								</FormGroup>
-
 
 								{/* <FormGroup>
 									<Label>Financial Institution</Label>
@@ -245,8 +271,6 @@ const AddProject = () => {
 										accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
 									/>
 								</FormGroup> */}
-
-
 
 								<CardBody style={{ paddingLeft: 0 }}>
 									{loading ? (

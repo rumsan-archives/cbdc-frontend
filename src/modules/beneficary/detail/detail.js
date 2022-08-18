@@ -103,10 +103,10 @@ const BenefDetails = ({ params }) => {
 
 	const handleAddprojectSubmit = async e => {
 		e.preventDefault();
-		if (!selectedProject) return addToast('Please select project', TOAST.ERROR);
+		if (!selectedProject) return addToast('Please select program', TOAST.ERROR);
 		try {
 			await addBenfToProject(id, selectedProject);
-			addToast('Beneficiary added to the project', TOAST.SUCCESS);
+			addToast('Beneficiary added to the program', TOAST.SUCCESS);
 			history.push('/beneficiaries');
 		} catch (err) {
 			const errMsg = err.message ? err.message : 'Internal server error';
@@ -120,15 +120,15 @@ const BenefDetails = ({ params }) => {
 
 	const handleIssueSubmit = e => {
 		e.preventDefault();
-		if (!selectedProject) return addToast('Please select project', TOAST.ERROR);
+		if (!selectedProject) return addToast('Please select program', TOAST.ERROR);
 		toggleProjectModal();
 		history.push(`/issue-budget/${selectedProject}/benf/${id}`);
 	};
 
 	const fetchCurrentBalance = useCallback(
 		async phone => {
-			const {agency} = appSettings
-			if(!agency || !agency.contracts) return;
+			const { agency } = appSettings;
+			if (!agency || !agency.contracts) return;
 			try {
 				const parsed_phone = parseInt(phone);
 				const { agency } = appSettings;
@@ -187,19 +187,19 @@ const BenefDetails = ({ params }) => {
 
 			{/* Add to project modal */}
 			<ModalWrapper
-				title="Add to project"
+				title="Add to Program"
 				loading={loading}
 				open={addProjectModal}
 				toggle={toggleAddProjectModal}
 				handleSubmit={handleAddprojectSubmit}
 			>
 				<FormGroup>
-					<Label>Project *</Label>
+					<Label>Program *</Label>
 					<SelectWrapper
 						onChange={handleProjectChange}
 						maxMenuHeight={150}
 						data={allProjects}
-						placeholder="--Select Project--"
+						placeholder="--Select Program--"
 					/>{' '}
 				</FormGroup>
 			</ModalWrapper>
@@ -218,7 +218,7 @@ const BenefDetails = ({ params }) => {
 						onChange={handleProjectChange}
 						maxMenuHeight={150}
 						data={allProjects}
-						placeholder="--Select Project--"
+						placeholder="--Select Program--"
 					/>{' '}
 					{/* <br />
 					<Label>Recent projects</Label>

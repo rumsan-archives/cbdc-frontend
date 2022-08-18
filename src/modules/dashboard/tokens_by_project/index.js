@@ -48,7 +48,7 @@ const Index = props => {
 
 	let bar_labels = [];
 	let bar_data = [];
-	console.log({ data })
+	console.log({ data });
 
 	if (data && data.length) {
 		bar_labels = [];
@@ -70,7 +70,7 @@ const Index = props => {
 			<Card>
 				<CardBody>
 					<div style={{ display: 'flex', justifyContent: 'space-between' }}>
-						<CardTitle>Projects With Total Allocated CBDC</CardTitle>
+						<CardTitle>Programs With Total Allocated CBDC</CardTitle>
 						<div>
 							{exportData.length ? <ExportToExcel apiData={exportData} fileName="Tokens-by-project-report.xlsx" /> : ''}
 						</div>

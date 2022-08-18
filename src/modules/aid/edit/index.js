@@ -48,14 +48,14 @@ const EditProject = ({ match }) => {
 
 	const handleFormSubmit = e => {
 		e.preventDefault();
-		if (!selectedManager) return addToast('Please select project manager', TOAST.ERROR);
+		if (!selectedManager) return addToast('Please select program manager', TOAST.ERROR);
 		if (selectedInstitutions.length) formData.financial_institutions = selectedInstitutions.toString();
 		formData.project_manager = selectedManager;
 		setLoading(true);
 		updateAid(id, formData)
 			.then(res => {
 				setLoading(false);
-				addToast(`Project updated successfully`, TOAST.SUCCESS);
+				addToast(`Program updated successfully`, TOAST.SUCCESS);
 				History.push(`/projects/${id}`);
 			})
 			.catch(err => {
@@ -125,8 +125,8 @@ const EditProject = ({ match }) => {
 
 	return (
 		<div>
-			<p className="page-heading">Projects</p>
-			<BreadCrumb redirect_path="projects" root_label="Projects" current_label="Edit" />
+			<p className="page-heading">Program</p>
+			<BreadCrumb redirect_path="projects" root_label="Programs" current_label="Edit" />
 			<Row>
 				<Col md="12">
 					<Card>
@@ -138,7 +138,7 @@ const EditProject = ({ match }) => {
 								</FormGroup>
 
 								<FormGroup>
-									<Label>Project Manager</Label>
+									<Label>Program Manager</Label>
 									{existingManager.length < 1 && (
 										<SelectWrapper
 											id="project_manager"

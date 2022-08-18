@@ -70,7 +70,7 @@ const Edit = ({ beneficiaryId }) => {
 
 	const handleFormSubmit = e => {
 		e.preventDefault();
-		if (!selectedProjects.length) return addToast('Please select project', TOAST.ERROR);
+		if (!selectedProjects.length) return addToast('Please select program', TOAST.ERROR);
 
 		if (selectedGroup) extras.group = selectedGroup;
 		const payload = { ...formData, extras: { ...extras } };
@@ -209,7 +209,7 @@ const Edit = ({ beneficiaryId }) => {
 									</Col>
 								</Row>
 								<FormGroup>
-									<Label>Project</Label>
+									<Label>Program</Label>
 									{existingProjects.length > 0 && (
 										<SelectWrapper
 											multi={true}
@@ -217,7 +217,7 @@ const Edit = ({ beneficiaryId }) => {
 											onChange={handleProjectChange}
 											maxMenuHeight={130}
 											data={projectList}
-											placeholder="--Select Project--"
+											placeholder="--Select Program--"
 										/>
 									)}
 
@@ -227,7 +227,7 @@ const Edit = ({ beneficiaryId }) => {
 											onChange={handleProjectChange}
 											maxMenuHeight={130}
 											data={projectList}
-											placeholder="--Select Project--"
+											placeholder="--Select Program--"
 										/>
 									)}
 								</FormGroup>
@@ -302,7 +302,12 @@ const Edit = ({ beneficiaryId }) => {
 									<Col md="6" sm="12">
 										<FormGroup>
 											<Label>Education</Label>
-											<Input type="text" value={extras.education || ''} name="education" onChange={handleExtraInfoChange} />
+											<Input
+												type="text"
+												value={extras.education || ''}
+												name="education"
+												onChange={handleExtraInfoChange}
+											/>
 										</FormGroup>
 									</Col>
 									<Col md="6" sm="12">
@@ -329,7 +334,7 @@ const Edit = ({ beneficiaryId }) => {
 											<br />
 											<Input
 												name="govt_id"
-												value={formData.govt_id ||''}
+												value={formData.govt_id || ''}
 												type="number"
 												className="form-field"
 												onChange={handleInputChange}

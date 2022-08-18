@@ -11,11 +11,10 @@ import PieChart from './pieChart';
 import Tabs from './tab';
 import { TOAST, PROJECT_STATUS, ROLES } from '../../../constants';
 import BreadCrumb from '../../ui_components/breadcrumb';
-import { getUser } from "../../../utils/sessionManager";
-import { useHistory } from "react-router-dom";
-import API from "../../../constants/api";
+import { getUser } from '../../../utils/sessionManager';
+import { useHistory } from 'react-router-dom';
+import API from '../../../constants/api';
 // import Balance from '../../ui_components/balance';
-
 
 export default function Index(props) {
 	const { id } = props.match.params;
@@ -38,14 +37,14 @@ export default function Index(props) {
 	const [projectDetails, setProjectDetails] = useState(null);
 	const [fetchingBlockchain, setFetchingBlockchain] = useState(false);
 	const [totalFiatBalance, setTotalFiatBalance] = useState(0);
-	const [totalRemainingFiatBalance, setTotalRemainingFiatBalance] = useState(0)
+	const [totalRemainingFiatBalance, setTotalRemainingFiatBalance] = useState(0);
 
 	const handleStatusChange = status => {
 		const success_label = status === PROJECT_STATUS.CLOSED ? 'Closed' : 'Activated';
 		changeProjectStatus(id, status)
 			.then(d => {
 				setProjectDetails(d);
-				addToast(`Project has been ${success_label}`, TOAST.SUCCESS);
+				addToast(`Program has been ${success_label}`, TOAST.SUCCESS);
 			})
 			.catch(err => {
 				addToast(err.message, TOAST.ERROR);
@@ -74,7 +73,7 @@ export default function Index(props) {
 			const res = await getProjectPackageBalance(id, rahat_admin);
 			console.log({ res });
 			setTotalFiatBalance(res.projectCapital.grandTotal || 0);
-			setTotalRemainingFiatBalance(res.remainingBalance.grandTotal || 0)
+			setTotalRemainingFiatBalance(res.remainingBalance.grandTotal || 0);
 		} catch (err) {
 			console.log(err);
 			addToast(err.message, TOAST.ERROR);
@@ -91,7 +90,7 @@ export default function Index(props) {
 
 	const handleCampaignClick = () => {
 		window.open(`${API.FUNDRAISER_FUNDRAISE}/${projectDetails.campaignId}`, '_blank');
-	}
+	};
 	const handleClick = () => {
 		const currentUser = getUser();
 		const isManager = currentUser && currentUser.roles.includes(ROLES.MANAGER);
@@ -103,28 +102,26 @@ export default function Index(props) {
 	const [toolTipOpen, setToolTipOpen] = useState(false);
 	const toggleToolTip = () => {
 		setToolTipOpen(!toolTipOpen);
-	}
+	};
 	return (
 		<>
 			<Row>
 				<Col md="9">
-					<p className="page-heading">Projects</p>
-					<BreadCrumb redirect_path="projects" root_label="Projects" current_label="Details" />
+					<p className="page-heading">Program</p>
+					<BreadCrumb redirect_path="projects" root_label="Programs" current_label="Details" />
 				</Col>
-
-
 			</Row>
 			<Row>
 				<Col md="7">
 					{projectDetails && (
 						<DetailsCard
 							fetching={fetchingBlockchain}
-							title="Project Details"
+							title="Program Details"
 							button_name="Generate QR Code"
-							name="Project Name"
+							name="Program Name"
 							name_value={projectDetails.name}
 							status={projectDetails.status}
-							total="Project Budget"
+							total="Program Budget"
 							total_value={total_tokens}
 							handleStatusChange={handleStatusChange}
 						/>

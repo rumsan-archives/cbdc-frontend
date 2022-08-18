@@ -86,17 +86,17 @@ const Dashboard = () => {
 	return (
 		<>
 			<Row>
-				<Col md="3">
+				<Col lg="3" md="6" sm="6">
 					<StatsCard
-						title="Projects"
-						subTitle="Total Projects"
+						title="Program"
+						subTitle="Total Programs"
 						title_color="#2b7ec1"
 						icon_color="#2b7ec1"
 						icon_name="fas fa-clone"
 						data={stats.totalProjects}
 					/>
 				</Col>
-				<Col md="3">
+				<Col lg="3" md="6" sm="6">
 					<StatsCard
 						title="Beneficiaries"
 						subTitle="Total Beneficiaries"
@@ -106,7 +106,17 @@ const Dashboard = () => {
 						data={stats.totalBeneficiaries}
 					/>
 				</Col>
-				<Col md="3">
+				<Col lg="3" md="6" sm="6">
+					<StatsCard
+						title="Vendors"
+						subTitle="Total Vendors"
+						title_color="#F49786"
+						icon_color="#F49786"
+						icon_name="fas fa-anchor"
+						data={stats.totalVendors}
+					/>
+				</Col>
+				<Col lg="3" md="6" sm="6">
 					<BeneficiaryByProject
 						releasedToken={stats.totalAllocation}
 						redeemedTokens={stats.redeemedTokens}
