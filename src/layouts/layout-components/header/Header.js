@@ -23,81 +23,85 @@ import { History } from '../../../utils/History';
 import logotext from '../../../assets/images/apix.png';
 import profilephoto from '../../../assets/images/users/1.jpg';
 import { useWSNotification } from '../../../hooks/useWebsocket';
-import * as API_CALLS from '../../../services/notification'
-import * as CONFIG from './config'
-
-
+import * as API_CALLS from '../../../services/notification';
+import * as CONFIG from './config';
 
 export default () => {
 	const [isOpen, setIsOpen] = useState(false);
 	const [currentUser, setCurrentUser] = useState({});
-	const [notifications, setNotifications] = useState(null)
+	const [notifications, setNotifications] = useState(null);
 	const { settings, appSettings, getAppSettings } = useContext(AppContext);
-	const wsNotification = useWSNotification()
+	const wsNotification = useWSNotification();
 
 	const getIcons = notification => {
-		const iconConfig = CONFIG.ICONS(notification?.notificationType)
+		const iconConfig = CONFIG.ICONS(notification?.notificationType);
 		return {
 			...notification,
 			...iconConfig
-		}
-	}
+		};
+	};
 
 	const fetchNotifications = useCallback(async (query = {}) => {
 		try {
 			let { data } = await API_CALLS.listNotifications(query);
 			if (data && data.length > 0) {
-				data = data.map((item) => {
-					const iconConfig = getIcons(item)
+				data = data.map(item => {
+					const iconConfig = getIcons(item);
 					return {
 						...item,
 						...iconConfig
-					}
-				})
-				setNotifications([...data])
+					};
+				});
+				setNotifications([...data]);
 			}
 		} catch (err) {
-			console.log("Error while fetching notifications", err)
+			console.log('Error while fetching notifications', err);
 		}
-	}, [])
-
+	}, []);
 
 	const handleNewNotification = useCallback(() => {
 		if (!wsNotification) return;
-		console.log({ wsNotification })
+		console.log({ wsNotification });
 		if (!notifications || !notifications.length) {
-			const configNotification = getIcons(wsNotification)
-			setNotifications([configNotification])
+			const configNotification = getIcons(wsNotification);
+			setNotifications([configNotification]);
 			return;
 		}
-		const isAlreadyPresent = notifications.some(element => element._id === wsNotification._id)
+		const isAlreadyPresent = notifications.some(element => element._id === wsNotification._id);
 		if (!isAlreadyPresent) {
 			let combinedArray = [wsNotification, ...notifications].map(item => getIcons(item));
-			setNotifications(combinedArray)
+			setNotifications(combinedArray);
 		}
-	}, [notifications, wsNotification])
+	}, [notifications, wsNotification]);
 
+	const handleNotificationSeen = useCallback(
+		async id => {
+			try {
+				let updatedNotification = await API_CALLS.update(id, { status: true });
+				updatedNotification = getIcons(updatedNotification);
+				let prevNotifications = [...notifications];
+				prevNotifications =
+					prevNotifications &&
+					prevNotifications.length &&
+					prevNotifications.map(item => {
+						if (item._id === updatedNotification._id) {
+							return {
+								...updatedNotification
+							};
+						}
+						return item;
+					});
 
-	const handleNotificationSeen = useCallback(async (id) => {
-		try {
-			let updatedNotification = await API_CALLS.update(id, { status: true });
-			updatedNotification = getIcons(updatedNotification)
-			let prevNotifications = [...notifications];
-			prevNotifications = prevNotifications && prevNotifications.length && prevNotifications.map((item) => {
-				if (item._id === updatedNotification._id) {
-					return {
-						...updatedNotification
-					}
-				}
-				return item
-			})
-
-			setNotifications(prevNotifications)
-		} catch (err) { }
-	}, [notifications])
+				setNotifications(prevNotifications);
+			} catch (err) {}
+		},
+		[notifications]
+	);
 
 	const loadAppSettings = useCallback(() => {
-		return getAppSettings().then().catch(err => console.log('Cannot get app setting'));
+		return getAppSettings()
+			.then()
+			.catch(err => console.log('Cannot get app setting'));
 	}, [getAppSettings]);
 
 	const getUserDetails = useCallback(() => {
@@ -148,14 +152,15 @@ export default () => {
 		}
 	};
 
-	const redirect = useCallback(async (id, redirectUrl) => {
-		const isSeen = notifications.find(item => item._id === id)?.status;
-		redirectUrl && History.push(redirectUrl)
-		if (isSeen) return;
-		handleNotificationSeen(id)
-	}, [handleNotificationSeen, notifications])
-
-
+	const redirect = useCallback(
+		async (id, redirectUrl) => {
+			const isSeen = notifications.find(item => item._id === id)?.status;
+			redirectUrl && History.push(redirectUrl);
+			if (isSeen) return;
+			handleNotificationSeen(id);
+		},
+		[handleNotificationSeen, notifications]
+	);
 
 	const handleProfileLink = () => {
 		History.push('/profile');
@@ -182,7 +187,12 @@ export default () => {
 					<NavbarBrand href="/">
 						<b className="logo-icon">{/* <img src={logoicon} alt="homepage" className="dark-logo" /> */}</b>
 						<span className="logo-text">
-							<img style={{ height: 60 }} src={logotext} alt="homepage" className="dark-logo" />
+							<img
+								style={{ height: 60 }}
+								src="https://assets.rumsan.com/rumsan-group/g20-logo.png"
+								alt="homepage"
+								className="dark-logo"
+							/>
 						</span>
 					</NavbarBrand>
 					{/*--------------------------------------------------------------------------------*/}
@@ -207,7 +217,6 @@ export default () => {
 						<UncontrolledDropdown nav inNavbar>
 							<DropdownToggle nav caret>
 								<FeatherIcon icon="bell" fill={wsNotification && 'orange'} />
-
 							</DropdownToggle>
 							<DropdownMenu right className="mailbox">
 								<span className="with-arrow">
@@ -219,32 +228,33 @@ export default () => {
 										<p className="mb-0">Notifications</p>
 									</div>
 								</div>
-								<div className={"message-center notifications"}>
+								<div className={'message-center notifications'}>
 									{/*<!-- Message -->*/}
 									{notifications?.map((notification, index) => {
 										return (
-											<span className={`message-item ${!notification.status && "bg-info bg-opacity-10"}`} key={index} onClick={() => redirect(notification._id, notification?.redirectUrl)} >
-												<span
-													className={
-														`btn btn-circle btn-${notification.iconBg}`
-													}
-												>
+											<span
+												className={`message-item ${!notification.status && 'bg-info bg-opacity-10'}`}
+												key={index}
+												onClick={() => redirect(notification._id, notification?.redirectUrl)}
+											>
+												<span className={`btn btn-circle btn-${notification.iconBg}`}>
 													<i className={notification.iconClass} />
 												</span>
 												<div className="mail-contnet">
-													<h5 className={`message-title ${!notification.status && "text-white"}`}>
+													<h5 className={`message-title ${!notification.status && 'text-white'}`}>
 														{notification.title}
 													</h5>
-													<span className={`mail-desc  ${!notification.status && "text-white"} `}>{notification.message}</span>
-													<span className={` time   ${!notification.status && "text-white"}`}>{notification.date}</span>
+													<span className={`mail-desc  ${!notification.status && 'text-white'} `}>
+														{notification.message}
+													</span>
+													<span className={` time   ${!notification.status && 'text-white'}`}>{notification.date}</span>
 												</div>
 											</span>
 										);
 									})}
 								</div>
-								<a className="nav-link text-center mb-1 text-dark" href="/notifications" >
-									<strong>Check all notifications</strong>{" "}
-									<i className="fa fa-angle-right" />
+								<a className="nav-link text-center mb-1 text-dark" href="/notifications">
+									<strong>Check all notifications</strong> <i className="fa fa-angle-right" />
 								</a>
 							</DropdownMenu>
 						</UncontrolledDropdown>
