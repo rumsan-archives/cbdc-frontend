@@ -7,7 +7,7 @@ import '../../../../assets/css/project.css';
 import BreadCrumb from '../../../ui_components/breadcrumb';
 import TokenTab from './token/index';
 import AssetTab from './asset/index';
-import Donation from "./donation";
+import Donation from './donation';
 
 export default function BudgetAdd({ match }) {
 	// const urlSearchParams = new URLSearchParams(window.location.search);
@@ -35,10 +35,10 @@ export default function BudgetAdd({ match }) {
 									toggle('1');
 								}}
 							>
-								Tokens
+								Budget
 							</NavLink>
 						</NavItem>
-						<NavItem>
+						{/* <NavItem>
 							<NavLink
 								className={classnames({ active: activeTab === '2' })}
 								onClick={() => {
@@ -47,7 +47,7 @@ export default function BudgetAdd({ match }) {
 							>
 								Packages
 							</NavLink>
-						</NavItem>
+						</NavItem> */}
 					</Nav>
 					<TabContent className="pt-2" activeTab={activeTab}>
 						<TabPane tabId="1">
@@ -57,17 +57,17 @@ export default function BudgetAdd({ match }) {
 								</Col>
 							</Row>
 						</TabPane>
-						<TabPane tabId="2">
+						{/* <TabPane tabId="2">
 							<Row>
 								<Col sm="12">
 									<AssetTab projectId={projectId} />
 								</Col>
 							</Row>
-						</TabPane>
+						</TabPane> */}
 					</TabContent>
 				</div>
 			</Card>
-				<Donation projectId={projectId}/>
+			{/* <Donation projectId={projectId} /> */}
 		</div>
 	);
 }

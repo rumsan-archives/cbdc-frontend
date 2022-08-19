@@ -202,7 +202,7 @@ const AddProject = () => {
 									/>
 								</FormGroup>
 
-								<Row>
+								{/* <Row>
 									<Col md="6" sm="12">
 										<FormGroup>
 											<Label>Program Period</Label>
@@ -248,7 +248,7 @@ const AddProject = () => {
 									<Label>
 										Total Required Token: <strong>{requiredToken}</strong>
 									</Label>
-								</FormGroup>
+								</FormGroup> */}
 
 								{/* <FormGroup>
 									<Label>Financial Institution</Label>

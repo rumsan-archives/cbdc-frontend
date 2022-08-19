@@ -42,7 +42,7 @@ export default function Balance(props) {
 						<Col>
 							<CardTitle className="title">{title || 'No Title'}</CardTitle>
 						</Col>
-						<Col>
+						{/* <Col>
 							{loading ? (
 								<Loading />
 							) : button_name ? (
@@ -57,7 +57,7 @@ export default function Balance(props) {
 							) : (
 								''
 							)}
-						</Col>
+						</Col> */}
 					</Row>
 					<Row>
 						<Col>
