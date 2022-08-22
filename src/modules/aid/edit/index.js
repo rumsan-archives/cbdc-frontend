@@ -133,7 +133,7 @@ const EditProject = ({ match }) => {
 						<CardBody>
 							<Form onSubmit={handleFormSubmit} style={{ color: '#6B6C72' }}>
 								<FormGroup>
-									<Label>Project Name</Label>
+									<Label>Program Name</Label>
 									<Input type="text" value={formData.name} name="name" onChange={handleInputChange} required />
 								</FormGroup>
 
@@ -166,7 +166,7 @@ const EditProject = ({ match }) => {
 									<Input type="text" value={formData.location} name="location" onChange={handleInputChange} required />
 								</FormGroup>
 
-								<FormGroup>
+								{/* <FormGroup>
 									<Label>Financial Institution</Label>
 									{existingInstitutions.length < 1 && (
 										<SelectWrapper
@@ -190,7 +190,7 @@ const EditProject = ({ match }) => {
 											placeholder="--Select Institution--"
 										/>
 									)}
-								</FormGroup>
+								</FormGroup> */}
 								{/* <FormGroup style={{ display: 'none' }}>
 									<Label htmlFor="benefUpload">Beneficiary Upload(.xlxs file)</Label>
 									<Input id="benefUpload" type="file" name="file" onChange={handleFileChange} />

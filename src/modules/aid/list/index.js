@@ -203,7 +203,7 @@ const List = () => {
 								<th className="border-0">S.N.</th>
 								<th className="border-0">Name</th>
 								<th className="border-0">Location</th>
-								<th className="border-0">Created Date</th>
+								{/* <th className="border-0">Created Date</th> */}
 								<th className="border-0">Status</th>
 								<th className="border-0">Token</th>
 								<th className="border-0">Action</th>
@@ -215,9 +215,17 @@ const List = () => {
 									return (
 										<tr key={d._id}>
 											<td>{(currentPage - 1) * PAGE_LIMIT + i + 1}</td>
-											<td>{dottedString(d.name)}</td>
+											<td>
+												<div className="d-flex no-block align-items-center">
+													<div className="">
+														<h5 className="mb-0 font-16 font-medium">{dottedString(d.name)}</h5>
+														<span>{moment(d.created_at).format('MMM Do YYYY')}</span>
+													</div>
+												</div>
+											</td>
+
 											<td>{dottedString(d.location)}</td>
-											<td>{moment(d.created_at).format('MMM Do YYYY')}</td>
+											{/* <td>{moment(d.created_at).format('MMM Do YYYY')}</td> */}
 											<td>{d.status === 'closed' ? 'COMPLETED' : d.status.toUpperCase()}</td>
 											<td>
 												{fetchingPackageBalances ? (
