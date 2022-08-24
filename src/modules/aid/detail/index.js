@@ -36,8 +36,6 @@ export default function Index(props) {
 
 	const [projectDetails, setProjectDetails] = useState(null);
 	const [fetchingBlockchain, setFetchingBlockchain] = useState(false);
-	const [totalFiatBalance, setTotalFiatBalance] = useState(0);
-	const [totalRemainingFiatBalance, setTotalRemainingFiatBalance] = useState(0);
 
 	const handleStatusChange = status => {
 		const success_label = status === PROJECT_STATUS.CLOSED ? 'Closed' : 'Activated';
@@ -70,17 +68,13 @@ export default function Index(props) {
 			const { rahat_admin } = agency.contracts;
 			await getProjectCapital(id, rahat_admin);
 			await getAidBalance(id, rahat_admin);
-			const res = await getProjectPackageBalance(id, rahat_admin);
-			console.log({ res });
-			setTotalFiatBalance(res.projectCapital.grandTotal || 0);
-			setTotalRemainingFiatBalance(res.remainingBalance.grandTotal || 0);
 		} catch (err) {
 			console.log(err);
 			addToast(err.message, TOAST.ERROR);
 		} finally {
 			setFetchingBlockchain(false);
 		}
-	}, [addToast, appSettings, getAidBalance, getProjectCapital, id, getProjectPackageBalance]);
+	}, [addToast, appSettings, getAidBalance, getProjectCapital, id]);
 
 	useEffect(fetchProjectDetails, []);
 
@@ -88,21 +82,7 @@ export default function Index(props) {
 		fetchPackageAndTokenBalance();
 	}, [fetchPackageAndTokenBalance]);
 
-	const handleCampaignClick = () => {
-		window.open(`${API.FUNDRAISER_FUNDRAISE}/${projectDetails.campaignId}`, '_blank');
-	};
-	const handleClick = () => {
-		const currentUser = getUser();
-		const isManager = currentUser && currentUser.roles.includes(ROLES.MANAGER);
-		if (isManager || projectDetails.status === PROJECT_STATUS.SUSPENDED)
-			return addToast('Access denied for this operation!', TOAST.ERROR);
-		history.push(`/add-campaign/${id}`);
-	};
 
-	const [toolTipOpen, setToolTipOpen] = useState(false);
-	const toggleToolTip = () => {
-		setToolTipOpen(!toolTipOpen);
-	};
 	return (
 		<>
 			<Row>
@@ -134,26 +114,12 @@ export default function Index(props) {
 							fetching={fetchingBlockchain}
 							available_tokens={available_tokens}
 							total_tokens={total_tokens}
-							total_package={totalFiatBalance}
-							available_package={totalRemainingFiatBalance}
 							projectStatus={projectDetails.status}
 							projectId={id}
 						/>
 					)}
 
-					{/* {projectDetails && (
-						<Balance
-							action=""
-							title="Balance"
-							button_name="Add Budget"
-							token_data={available_tokens}
-							package_data={totalFiatBalance}
-							fetching={fetchingBlockchain}
-							loading={loading}
-							projectStatus={projectDetails.status}
-							projectId={id}
-						/>
-					)} */}
+					
 				</Col>
 			</Row>
 

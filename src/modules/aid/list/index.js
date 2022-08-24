@@ -74,28 +74,8 @@ const List = () => {
 		}
 	};
 
-	const appendProjectBalances = useCallback(({ projects, balances }) => {
-		const projectsWithBalances = projects.map((el, i) => {
-			el.tokenBalance = balances.projectBalances[i];
-			el.packageBalances = balances.packageBalances[i].grandTotal;
-			return el;
-		});
-		setProjectList(projectsWithBalances);
-		setFetchingPackageBalances(false);
-	}, []);
 
-	const fetchProjectsBalances = useCallback(
-		async projects => {
-			if (!appSettings || !appSettings.agency) return;
-			const { agency } = appSettings;
-			if (!agency && !agency.contracts) return;
-			setFetchingPackageBalances(true);
-			const projectIds = projects.map(el => el._id);
-			const balances = await getProjectsBalances(projectIds, agency.contracts.rahat, agency.contracts.rahat_admin);
-			if (balances) await appendProjectBalances({ projects, balances });
-		},
-		[getProjectsBalances, appSettings, appendProjectBalances]
-	);
+
 
 	const onPageChanged = useCallback(
 		async paginationData => {
@@ -108,9 +88,9 @@ const List = () => {
 			const query = { start, limit: PAGE_LIMIT, ...params };
 			const { data } = await listAid(query);
 			setProjectList(data);
-			fetchProjectsBalances(data);
+			
 		},
-		[listAid, projectStatus, searchName, fetchProjectsBalances]
+		[listAid, projectStatus, searchName]
 	);
 
 	const loadAidList = useCallback(
@@ -228,13 +208,11 @@ const List = () => {
 											{/* <td>{moment(d.created_at).format('MMM Do YYYY')}</td> */}
 											<td>{d.status === 'closed' ? 'COMPLETED' : d.status.toUpperCase()}</td>
 											<td>
-												{fetchingPackageBalances ? (
-													<MiniSpinner />
-												) : (
+												{
 													<>
 														<span className="badge badge-success p-2 mb-1">{d.tokenBalance || 0} </span>
 													</>
-												)}
+												}
 											</td>
 											<td className="blue-grey-text  text-darken-4 font-medium">
 												<Link to={`/projects/${d._id}`}>

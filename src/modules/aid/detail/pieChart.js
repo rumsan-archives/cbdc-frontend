@@ -22,16 +22,6 @@ export default function Chart({ available_tokens, total_tokens, total_package, a
 		]
 	};
 
-	const pieDataPackage = {
-		labels: ['Available', 'Issued'],
-		datasets: [
-			{
-				data: [available_package, total_package - available_package],
-				backgroundColor: ['#2b7ec1', '#fd7e14'],
-				hoverBackgroundColor: ['#2b7ec1', '#fd7e14']
-			}
-		]
-	};
 
 	const handleClick = () => {
 		const currentUser = getUser();
@@ -83,26 +73,7 @@ export default function Chart({ available_tokens, total_tokens, total_package, a
 									}}
 								/>
 							</div>
-							{/* <div
-								className="chart-wrapper"
-								style={{ width: '100%', marginBottom: '40px', marginTop: '40px', height: 160 }}
-							>
-								<Label style={{ marginBottom: '10px' }}>Packages</Label>
-								<Pie
-									data={pieDataPackage}
-									options={{
-										maintainAspectRatio: false,
-										legend: {
-											display: true,
-											position: 'bottom',
-											labels: {
-												fontFamily: 'Be Vietnam',
-												fontColor: '#9B9B9B'
-											}
-										}
-									}}
-								/>
-							</div> */}
+					
 						</div>
 					)}
 				</CardBody>

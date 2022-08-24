@@ -136,7 +136,7 @@ const AddProject = () => {
 
 	useEffect(() => {
 		async function fetchData() {
-			const users = await listUsersByRole(ROLES.MANAGER);
+			const users = await listUsersByRole(ROLES.ADMIN);
 			const institutions = await listFinancialInstitutions({ limit: APP_CONSTANTS.FETCH_LIMIT });
 			if (institutions && institutions.data.length) loadFinancialInstiturions(institutions.data);
 			if (users && users.data.length) loadProjectManagers(users.data);
