@@ -86,5 +86,5 @@ jobs:
           context: .
           file: Dockerfile
           push: true
-          tags: esatya/g20_app:stage
+          tags: rumsan/g20_app:stage
 
