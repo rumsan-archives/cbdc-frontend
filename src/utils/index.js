@@ -79,3 +79,14 @@ export const createRandomIdentity = () => {
 	const entropy = getRandomEntropy();
 	return EthCrypto.createIdentity(entropy);
 };
+
+export const dateToSeconds = (date) => {
+	const seconds = Math.floor(new Date(date).getTime() / 1000);
+	return seconds
+}
+
+export const secondsToDate = (seconds) => {
+	const date = new Date(seconds * 1000).toLocaleDateString("en-US")
+	console.log({date})
+	return date
+}

@@ -7,7 +7,7 @@ import { getUser } from '../../../utils/sessionManager';
 import { ROLES, PROJECT_STATUS, TOAST } from '../.../../../../constants';
 import { useToasts } from 'react-toast-notifications';
 
-export default function Chart({ available_tokens, total_tokens, total_package, available_package, fetching, projectStatus, projectId }) {
+export default function Chart({ available_tokens, total_tokens, total_package, available_package, fetching, projectStatus, projectId,enableBudgetAdd }) {
 	const history = useHistory();
 	const { addToast } = useToasts();
 
@@ -39,14 +39,27 @@ export default function Chart({ available_tokens, total_tokens, total_package, a
 							<CardTitle className="title">Balance</CardTitle>
 						</Col>
 						<Col>
-							<button
+						{enableBudgetAdd ? (<button
 								type="button"
 								className="btn waves-effect waves-light btn-outline-info"
 								style={{ borderRadius: '8px', float: 'right' }}
 								onClick={handleClick}
 							>
 								Add Budget
+							</button>):
+							(
+								<button
+								type="button"
+								className="btn waves-effect waves-light btn-info"
+								style={{ borderRadius: '8px', float: 'right' }}
+								onClick={handleClick}
+								disabled
+							>
+								Budget Activated
 							</button>
+							)
+							}
+							
 						</Col>
 					</Row>
 					{fetching ? (

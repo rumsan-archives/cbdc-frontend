@@ -8,6 +8,7 @@ const initialState = {
   pagination: { total: 0, limit: 20, start: 0, currentPage: 1, totalPages: 0 },
   agency_details: null,
   loading: false,
+  
 };
 
 export const AgencyContext = createContext(initialState);

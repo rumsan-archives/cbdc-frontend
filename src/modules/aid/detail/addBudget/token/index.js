@@ -24,13 +24,13 @@ import PasscodeModal from '../../../../global/PasscodeModal';
 import MaskLoader from '../../../../global/MaskLoader';
 
 import { TOAST } from '../../../../../constants';
-import { formatBalanceAndCurrency } from '../../../../../utils';
+import { formatBalanceAndCurrency,dateToSeconds,secondsToDate } from '../../../../../utils';
 
 const Token = ({ projectId }) => {
 	const { addToast } = useToasts();
 	const history = useHistory();
 
-	const { total_tokens, available_tokens, addProjectBudget } = useContext(AidContext);
+	const { total_tokens, available_tokens, addProjectBudget,setDisbursementData,disbursementData,beneficiary_pagination,beneficiaryByAid,allocateProjectBudget } = useContext(AidContext);
 
 	const { wallet, isVerified, appSettings } = useContext(AppContext);
 	const [inputTokens, setInputToken] = useState('');
@@ -39,18 +39,21 @@ const Token = ({ projectId }) => {
 	const [masking, setMasking] = useState(false);
 
 	const timeDuration = [
-		{ name: 'Week', days: 7 },
-		{ name: 'Month', days: 30 },
-		{ name: 'Year', days: 365 }
+		{ name: 'Week', days: 7, seconds:604800 },
+		{ name: 'Month', days: 30 , seconds: 2628000},
+		{ name: 'Year', days: 365 , seconds: 31536000}
 	];
 	const timePeriod = [
-		{ name: 'Daily', days: 1 },
-		{ name: 'Weekly', days: 7 },
-		{ name: 'Monthly', days: 30 },
-		{ name: 'Yearly', days: 365 }
+		{ name: 'Every Minute', days: 0 , seconds:60},
+		{ name: 'Hourly', days: 0 , seconds:3600},
+		{ name: 'Daily', days: 1 , seconds:86400},
+		{ name: 'Weekly', days: 7 , seconds:604800},
+		{ name: 'Monthly', days: 30 , seconds:2628000},
+		{ name: 'Yearly', days: 365 ,seconds:31536000}
 	];
 
 	const [disbursementTime, setDisbursementTime] = useState(0);
+	const [disbursementAmount,setDisburementAmount] = useState(0);
 	const [timeDropdownOpen, setTimeDropdownOpen] = useState(false);
 	const toggleTimeDropDown = () => setTimeDropdownOpen(!timeDropdownOpen);
 	const [projectDuration, setProjectDuration] = useState({});
@@ -58,10 +61,20 @@ const Token = ({ projectId }) => {
 	const [periodDropdownOpen, setPeriodDropdownOpen] = useState(false);
 	const [calculateToken, setCalculateToken] = useState(true);
 	const [editToken, setEditToken] = useState(false);
+	const [startDate,setStartDate] = useState(0);
+	const [endDate,setEndDate] = useState(0);
+
 
 	const handleCalculate = () => {
+		//if(!)
 		setCalculateToken(!calculateToken);
-		setEditToken(!editToken);
+		setEditToken(!editToken); 
+		setDisbursementData({disbursementAmount:disbursementAmount,
+				disbursementFrequency:disbursementPeriod.seconds,
+				startDate:startDate,
+				endDate:endDate,
+				totalDisbursementAmount:requiredToken
+			})
 	};
 
 	const changeProjectDuration = el => {
@@ -71,9 +84,12 @@ const Token = ({ projectId }) => {
 	const togglePeriodDropDown = () => setPeriodDropdownOpen(!periodDropdownOpen);
 
 	const changeDisbursementAmount = e => {
-		const projectDurationInDays = disbursementTime * projectDuration.days;
-		const numberOfDisbursements = projectDurationInDays / disbursementPeriod.days;
-		setRequiredToken(e.target.value * numberOfDisbursements);
+		setDisburementAmount(e.target.value);
+		const projectDurationInSeconds = disbursementTime * projectDuration.seconds;
+		const projectEndDateInSeconds = dateToSeconds(startDate) + projectDurationInSeconds;
+		const numberOfDisbursements = projectDurationInSeconds / disbursementPeriod.seconds;
+		setRequiredToken(e.target.value * numberOfDisbursements * beneficiary_pagination.total);
+		setEndDate(secondsToDate(projectEndDateInSeconds))
 	};
 
 	const [disbursementPeriod, setDisbursementPeriod] = useState({});
@@ -82,9 +98,9 @@ const Token = ({ projectId }) => {
 	};
 
 	const handleInputChange = e => {
-		let { value } = e.target;
-		setInputToken(value);
+		if(e.target.name === 'startDate') setStartDate(e.target.value)
 	};
+
 
 	const togglePasscodeModal = useCallback(() => {
 		setPasscodeModal(!passcodeModal);
@@ -99,49 +115,97 @@ const Token = ({ projectId }) => {
 
 	const toggle = () => setModal(!modal);
 
-	const submitProjectBudget = useCallback(async () => {
-		if (isVerified && wallet) {
-			try {
-				setPasscodeModal(false);
-				setMasking(true);
-				const { rahat_admin } = appSettings.agency.contracts;
-				const res = await addProjectBudget(wallet, projectId, inputTokens, rahat_admin);
-				if (res) {
-					setInputToken('');
-					setMasking(false);
-					addToast(`${inputTokens} tokens added to the project`, TOAST.SUCCESS);
-					history.push(`/projects/${projectId}`);
-				}
-			} catch (err) {
-				setPasscodeModal(false);
+	const allocateBudgetToProject = async() => {
+		if(!wallet) return;
+		if(!appSettings?.agency?.contracts) return;
+		try{
+		console.log(wallet)
+		const { rahat_admin } = appSettings.agency.contracts;
+		console.log({rahat_admin})
+		setMasking(true);
+		const res = await allocateProjectBudget(wallet,projectId,rahat_admin)
+		if (res) {
+			setInputToken('');
+			setMasking(false);
+			addToast(`${inputTokens} tokens added to the project`, TOAST.SUCCESS);
+			history.push(`/projects/${projectId}`);
+		}
+	}
+	catch(err){
 				let err_msg = err.message ? err.message : 'Could not add token!';
-				// if (err.code === 4001) err_msg = err.message;
 				setMasking(false);
 				addToast(err_msg, TOAST.ERROR);
-			}
+	}
+		
+	}
+
+	// const submitProjectBudget = useCallback(async () => {
+	// 	if (isVerified && wallet) {
+	// 		try {
+	// 			setPasscodeModal(false);
+	// 			setMasking(true);
+	// 			const { rahat_admin } = appSettings.agency.contracts;
+	// 			const res = await addProjectBudget(wallet, projectId, inputTokens, rahat_admin);
+	// 			if (res) {
+	// 				setInputToken('');
+	// 				setMasking(false);
+	// 				addToast(`${inputTokens} tokens added to the project`, TOAST.SUCCESS);
+	// 				history.push(`/projects/${projectId}`);
+	// 			}
+	// 		} catch (err) {
+	// 			setPasscodeModal(false);
+	// 			let err_msg = err.message ? err.message : 'Could not add token!';
+	// 			// if (err.code === 4001) err_msg = err.message;
+	// 			setMasking(false);
+	// 			addToast(err_msg, TOAST.ERROR);
+	// 		}
+	// 	}
+	// }, [addProjectBudget, addToast, appSettings.agency, inputTokens, isVerified, projectId, wallet, history]);
+
+	// useEffect(() => {
+	// 	submitProjectBudget();
+	// }, [isVerified, submitProjectBudget]);
+
+	const fetchTotalRecords = useCallback(async () => {
+		try {
+			await beneficiaryByAid(projectId);
+		} catch (err) {
+			addToast('Something went wrong!', {
+				appearance: 'error',
+				autoDismiss: true
+			});
 		}
-	}, [addProjectBudget, addToast, appSettings.agency, inputTokens, isVerified, projectId, wallet, history]);
+	}, [addToast, beneficiaryByAid, projectId]);
 
 	useEffect(() => {
-		submitProjectBudget();
-	}, [isVerified, submitProjectBudget]);
+		fetchTotalRecords();
+	}, [fetchTotalRecords]);
 
 	return (
 		<>
-			<MaskLoader message="Adding token, please wait..." isOpen={masking} />
+			<MaskLoader message="Allocating Tokens, please wait..." isOpen={masking} />
 			<PasscodeModal isOpen={passcodeModal} toggleModal={togglePasscodeModal}></PasscodeModal>
 
 			{calculateToken && (
 				<div className="spacing-budget">
 					<Row>
 						<Col md="6" sm="12" className="mb-3">
-							<p className="card-font-bold">{formatBalanceAndCurrency(total_tokens)}</p>
+							<p className="card-font-bold">{beneficiary_pagination.total}</p>
 							<div className="sub-title">Beneficiaries</div>
 						</Col>
 						{/* <Col md="6" sm="12">
 						<p className="card-font-bold">{formatBalanceAndCurrency(available_tokens)}</p>
 						<div className="sub-title">Available Token</div>
 					</Col> */}
+					</Row>
+					<Row>
+						<Col md="5" sm="12" className='mb-3'>
+									
+							<Label className="mr-3">Start Date:</Label>
+							<Input className="mr-3" name="startDate" type="date" onChange={handleInputChange} />
+													
+					</Col>
+					
 					</Row>
 					<Row>
 						<Col md="5" sm="12">
@@ -190,12 +254,20 @@ const Token = ({ projectId }) => {
 							</Button>
 						</Col>
 					</Row>
-
-					<FormGroup>
-						<Label>
+					
+					<Row className='mt-3'>
+					<Col>
+					<Label>
 							Total Required Token: <strong>{requiredToken}</strong>
 						</Label>
-					</FormGroup>
+					</Col>
+						
+						<Col>
+					<Label>
+							Project End Date: <strong>{endDate}</strong>
+						</Label>
+					</Col>
+					</Row>
 				</div>
 			)}
 
@@ -203,26 +275,26 @@ const Token = ({ projectId }) => {
 				<div className="spacing-budget">
 					<Row className="mb-3 justify-content-center">
 						<Col md="2" sm="12" className="mb-3">
-							<p className="card-font-bold">{formatBalanceAndCurrency(total_tokens)}</p>
+							<p className="card-font-bold">{beneficiary_pagination.total}</p>
 							<div className="sub-title mt-2">
 								{' '}
 								Total <br /> Beneficiaries
 							</div>
 						</Col>
 						<Col md="2" sm="12" className="mb-3">
-							<p className="card-font-bold">50000</p>
+							<p className="card-font-bold">{disbursementData.disbursementAmount}</p>
 							<div className="sub-title mt-2">
 								Disbursement <br /> Amount
 							</div>
 						</Col>
 						<Col md="2" sm="12" className="mb-3">
-							<p className="card-font-bold">50000</p>
+							<p className="card-font-bold">{Math.round(disbursementData.totalDisbursementAmount)}</p>
 							<div className="sub-title mt-2">
 								Total <br /> Budget
 							</div>
 						</Col>
 						<Col md="3" sm="12" className="mb-3">
-							<p className="card-font-bold">2023-02-05</p>
+							<p className="card-font-bold">{endDate}</p>
 							<div className="sub-title mt-2">End Date</div>
 						</Col>
 						<Col md="2" sm="12" className="mt-3 mb-3">
@@ -242,8 +314,8 @@ const Token = ({ projectId }) => {
 										Are you sure you want to start program with given settings?
 										<Row className="text-center mt-3 mb-3">
 											<Col sm="6" xs="6">
-												<Button type="button" className="btn btn-info mt-2" style={{ width: '130px' }}>
-													Confirm
+												<Button onClick={allocateBudgetToProject} type="button" className="btn btn-info mt-2" style={{ width: '130px' }}>
+													Confirms
 												</Button>
 											</Col>
 											<Col sm="6" xs="6">
@@ -251,6 +323,7 @@ const Token = ({ projectId }) => {
 													type="button"
 													className="btn mt-2"
 													color="danger"
+													onClick={toggle}
 													style={{
 														width: '130px',
 														boxShadow: '0px 4px 15px 3px rgb(83 167 216 / 15%)',

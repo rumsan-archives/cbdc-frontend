@@ -85,18 +85,6 @@ const Beneficiary = () => {
 		setfetchingBeneficiaryTokens(false);
 	}, []);
 
-	const fetchBeneficiariesBalances = useCallback(
-		async ({ beneficiaries }) => {
-			if (!appSettings || !appSettings.agency || !appSettings.agency.contracts) return;
-			const { agency } = appSettings;
-			setfetchingBeneficiaryTokens(true);
-			const tokenBalances = await getBeneficiariesBalances(beneficiaries, agency.contracts.rahat);
-			const packageBalances = await getBenfPackageBalances(beneficiaries, agency.contracts.rahat);
-			if (tokenBalances.length) await appendBeneficiaryBalances({ beneficiaries, tokenBalances, packageBalances });
-		},
-		[appSettings, getBeneficiariesBalances, appendBeneficiaryBalances, getBenfPackageBalances]
-	);
-
 	const fetchList = useCallback(
 		async params => {
 			let query = { start: 0, limit: PAGE_LIMIT, ...params };
@@ -149,9 +137,8 @@ const Beneficiary = () => {
 			console.log({ query })
 			const { data } = await listBeneficiary(query);
 			setBenfList(data);
-			fetchBeneficiariesBalances({ beneficiaries: data });
 		},
-		[getQueryParams, listBeneficiary, fetchBeneficiariesBalances]
+		[getQueryParams, listBeneficiary]
 	);
 
 	const handleAddClick = () => History.push('/add-beneficiary');
@@ -230,7 +217,6 @@ const Beneficiary = () => {
 									<th className="border-0">Address</th>
 									<th className="border-0">Registration Date</th>
 									<th className="border-0">Registered By</th>
-									<th className="border-0">Balance</th>
 									<th className="border-0">Action</th>
 								</tr>
 							</thead>
@@ -257,25 +243,7 @@ const Beneficiary = () => {
 													{/* {d.creator_name ? dottedString(d.creator_name, 15) : '-'} */}
 													{d.created_by && `${renderSingleRole(d.created_by.roles)}`}
 												</td>
-												<td>
-													{fetchingBeneficiaryTokens ? (
-														<MiniSpinner />
-													) : d.tokenBalance || d.issued_packages ? (
-														<>
-															<span className="badge badge-success p-2 mb-1">
-																{formatBalanceAndCurrency(d.tokenBalance)}
-															</span>
-															<br />
-															{/* <span className="badge bg-light text-dark p-2">
-																Rs. {formatBalanceAndCurrency(
-																	d.packageBalance
-																)} Packages
-															</span> */}
-														</>
-													) : (
-														<span className="badge bg-light text-dark p-2">0 Tokens</span>
-													)}
-												</td>
+											
 												<td>
 													<Link to={`/beneficiaries/${d._id}`}>
 														<i className="fas fa-eye fa-lg"></i>

@@ -87,6 +87,7 @@ const List = () => {
 			let start = (currentPage - 1) * pageLimit;
 			const query = { start, limit: PAGE_LIMIT, ...params };
 			const { data } = await listAid(query);
+						console.log({data})
 			setProjectList(data);
 			
 		},
@@ -105,6 +106,7 @@ const List = () => {
 	const fetchTotalRecords = useCallback(async () => {
 		try {
 			const data = await listAid({ start: 0, limit: PAGE_LIMIT });
+
 			setTotalRecords(data.total);
 		} catch (err) {
 			addToast('Something went wrong!', {
@@ -185,7 +187,7 @@ const List = () => {
 								<th className="border-0">Location</th>
 								{/* <th className="border-0">Created Date</th> */}
 								<th className="border-0">Status</th>
-								<th className="border-0">Token</th>
+								<th className="border-0">Allocated Token</th>
 								<th className="border-0">Action</th>
 							</tr>
 						</thead>
@@ -210,7 +212,7 @@ const List = () => {
 											<td>
 												{
 													<>
-														<span className="badge badge-success p-2 mb-1">{d.tokenBalance || 0} </span>
+														<span className="badge badge-success p-2 mb-1">{d?.allocations[0]?.amount? d.allocations[0].amount: 0} </span>
 													</>
 												}
 											</td>

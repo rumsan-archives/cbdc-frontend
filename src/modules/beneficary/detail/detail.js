@@ -126,7 +126,7 @@ const BenefDetails = ({ params }) => {
 	};
 
 	const fetchCurrentBalance = useCallback(
-		async phone => {
+		async (projectId,phone) => {
 			const { agency } = appSettings;
 			if (!agency || !agency.contracts) return;
 			try {
@@ -135,32 +135,33 @@ const BenefDetails = ({ params }) => {
 				if (!agency || !agency.contracts) return;
 				const { rahat } = agency.contracts;
 				setFetching(true);
-				const balance = await getBeneficiaryBalance(parsed_phone, rahat);
-				const res = await getBenfPackageBalance(parsed_phone, rahat);
+				const balance = await getBeneficiaryBalance(projectId,parsed_phone, rahat);
+				
 				const issuedTokens = await getTotalIssuedTokens(parsed_phone, rahat);
 				setTotalIssuedTokens(issuedTokens);
-				setTotalPackageBalance(res);
 				setCurrentBalance(balance);
 				setFetching(false);
 			} catch (err) {
+				console.log(err)
 				setCurrentBalance('0');
 				setFetching(false);
 			}
 		},
-		[appSettings, getBeneficiaryBalance, getBenfPackageBalance, getTotalIssuedTokens]
+		[appSettings, getBeneficiaryBalance, getTotalIssuedTokens]
 	);
 
 	const fetchBeneficiaryDetails = useCallback(async () => {
 		const details = await getBeneficiaryDetails(id);
 		if (details && details.extras) setExtras(details.extras);
 		setBasicInfo(details);
+		let projects;
 		if (details.projects && details.projects.length) {
-			const projects = details.projects.map(d => {
+			 projects = details.projects.map(d => {
 				return { id: d._id, name: d.name };
 			});
 			setProjectList(projects);
 		}
-		await fetchCurrentBalance(details.phone);
+		await fetchCurrentBalance(projects[0].id,details.phone);
 	}, [fetchCurrentBalance, getBeneficiaryDetails, id]);
 
 	const fetchAllProjects = useCallback(async () => {
@@ -268,8 +269,6 @@ const BenefDetails = ({ params }) => {
 						name="Name"
 						name_value={basicInfo.name ? basicInfo.name : ''}
 						imgUrl={basicInfo.photo ? basicInfo.photo : ''}
-						total="Issued Tokens"
-						total_value={totalIssuedTokens}
 					/>
 				</Col>
 				<Col md="5">

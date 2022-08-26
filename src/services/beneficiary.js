@@ -11,18 +11,18 @@ const access_token = getUserToken();
 const abiCoder = new ethers.utils.AbiCoder();
 
 // Available tokens
-export async function getBeneficiaryBalance(phone, contract_address) {
-	const contract = await getContractByProvider(contract_address, CONTRACT.RAHAT);
-	const data = await contract.erc20Balance(phone);
+export async function getBeneficiaryBalance(projectId,phone, contract_address) {
+	const contract = await getContractByProvider(contract_address, CONTRACT.REGULATOR);
+	const data = await contract.fetchBeneficiaryBalance(projectId,phone);
 	if (!data) return null;
 	return data.toNumber();
 }
 
-export async function getBeneficiariesBalances(beneficiaries, contract_address) {
+export async function getBeneficiariesBalances(projectId,beneficiaries, contract_address) {
 	try {
-		const contract = await getContractByProvider(contract_address, CONTRACT.RAHAT);
+		const contract = await getContractByProvider(contract_address, CONTRACT.REGULATOR);
 		const callData = beneficiaries.map(ben =>
-			generateMultiCallData(CONTRACT.RAHAT, 'erc20Balance', [Number(ben.phone)])
+			generateMultiCallData(CONTRACT.REGULATOR, 'fetchBeneficiaryBalance', [projectId,Number(ben.phone)])
 		);
 		const data = await contract.callStatic.multicall(callData);
 		const decodedData = data.map(el => abiCoder.decode(['uint256'], el));

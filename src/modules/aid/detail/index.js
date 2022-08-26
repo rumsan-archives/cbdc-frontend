@@ -116,6 +116,7 @@ export default function Index(props) {
 							total_tokens={total_tokens}
 							projectStatus={projectDetails.status}
 							projectId={id}
+							enableBudgetAdd={projectDetails.allocations.length === 0}
 						/>
 					)}
 
