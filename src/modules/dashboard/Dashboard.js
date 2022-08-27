@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect,useCallback } from 'react';
 import { Row, Col } from 'reactstrap';
 import { useToasts } from 'react-toast-notifications';
 import TokenByProject from './tokens_by_project';
@@ -6,12 +6,15 @@ import BeneficiaryByProject from './beneficiary_by_project';
 import { StatsCard } from '../ui_components/cards';
 import { TOAST } from '../../constants';
 import { UserContext } from '../../contexts/UserContext';
+import {AppContext} from '../../contexts/AppSettingsContext';
 import TransactionChart from '../ui_components/chart';
+import { fetchAllocatedandUsedTokens } from '../../services/agency';
 
 const Dashboard = () => {
 	const { addToast } = useToasts();
 
 	const { getDashboardStats } = useContext(UserContext);
+	const { appSettings } = useContext(AppContext);
 	const [stats, setStats] = useState({
 		totalProjects: 0,
 		totalVendors: 0,
@@ -27,6 +30,17 @@ const Dashboard = () => {
 		tokens_by_project: [],
 		benef_by_project: []
 	});
+	const [cbdcPool,setCbdcPool] = useState({allocated:0,remaining:0})
+
+	const getUsedTokens =  useCallback (async () => {
+		if (!appSettings) return;
+		const { agency } = appSettings;
+		if (!agency || !agency.contracts) return;
+		const { rahat_erc20,rahat } = agency.contracts;
+		const {totalAllocated,used} = await fetchAllocatedandUsedTokens(rahat_erc20,rahat);
+		const remainingToken = totalAllocated - used;
+		setCbdcPool({allocated:used,remaining:remainingToken})
+	},[appSettings])
 
 	const fetchDashboardStats = () => {
 		getDashboardStats()
@@ -82,6 +96,9 @@ const Dashboard = () => {
 	};
 
 	useEffect(fetchDashboardStats, []);
+	useEffect(() => {
+		getUsedTokens();
+	}, [getUsedTokens]);
 
 	return (
 		<>
@@ -118,8 +135,8 @@ const Dashboard = () => {
 				</Col>
 				<Col lg="3" md="6" sm="6">
 					<BeneficiaryByProject
-						releasedToken={stats.totalAllocation}
-						redeemedTokens={stats.redeemedTokens}
+						releasedToken={cbdcPool.allocated}
+						redeemedTokens={cbdcPool.remaining}
 						data={stats.beneficiariesByProject}
 						exportData={exportData.benef_by_project || []}
 					/>

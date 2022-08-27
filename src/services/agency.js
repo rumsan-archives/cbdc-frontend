@@ -3,6 +3,10 @@ import API from '../constants/api';
 import qs from 'query-string';
 
 import { getUserToken } from '../utils/sessionManager';
+import CONTRACT from '../constants/contracts';
+import {
+	getContractByProvider,
+} from '../blockchain/abi';
 
 const access_token = getUserToken();
 
@@ -80,4 +84,17 @@ export function approveAgency(agencyId) {
 				reject({ statusText: 'FAIL', data: {} });
 			});
 	});
+}
+
+export async function fetchAllocatedandUsedTokens(tokenAddress,regulaterAddress){
+	try{
+;	const tokenContract = await getContractByProvider(tokenAddress, CONTRACT.RAHAT_ERC20);
+	const supply = await tokenContract.totalSupply();
+	const used = await tokenContract.balanceOf(regulaterAddress)
+	return {totalAllocated:supply.toNumber(),used:used.toNumber()};
+	}
+	catch(e){
+		console.log(e)
+	}
+
 }
