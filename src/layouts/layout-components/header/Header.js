@@ -16,6 +16,7 @@ import FeatherIcon from 'feather-icons-react';
 import { AppContext } from '../../../contexts/AppSettingsContext';
 import { getUser, logoutUser } from '../../../utils/sessionManager';
 import { History } from '../../../utils/History';
+import g20Logo from '../../../assets/images/g20-logo.png';
 
 /*--------------------------------------------------------------------------------*/
 /* Import images which are need for the HEADER                                    */
@@ -189,7 +190,7 @@ export default () => {
 						<span className="logo-text">
 							<img
 								style={{ height: 60 }}
-								src="https://assets.rumsan.com/rumsan-group/g20-logo.png"
+								src={g20Logo}
 								alt="homepage"
 								className="dark-logo"
 							/>

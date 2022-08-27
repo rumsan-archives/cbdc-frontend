@@ -8,6 +8,8 @@ import EthCrypto from 'eth-crypto';
 import WalletService from '../../utils/blockchain/wallet';
 import DataService from '../../services/db';
 import { saveUser, saveUserToken } from '../../utils/sessionManager';
+import g20Logo from '../../assets/images/g20-logo.png';
+
 
 import Swal from 'sweetalert2';
 
@@ -69,21 +71,17 @@ const Wallet = () => {
 			<Row style={{ height: '100vh' }}>
 				<Col className="left-content">
 					<div className="text-center">
-						<img src="https://assets.rumsan.com/rumsan-group/g20-logo.png" width="400PX" alt="rahat logo"></img>
+						<img src={g20Logo} width="400PX" alt="g20 logo"></img>
 						<div style={{ width: '410px' }}>
 							<p className="description mt-4">
-								Distribute and Track cash and mobilize the local community encouraging financial resilience and freedom.
-							</p>
+								Disburse and transact retail CBDC (r/CBDC) to unbanked using low-tech devices for public allowance program. 							</p>
 						</div>
 					</div>
+						<p className="text-copyright mb-5" style={{ color: '#000000' }}>
+						PAMS is designed by Rumsan Associates as proof of concept for G20 Tech Sprint.
+					</p>
 				</Col>
 				<Col className="right-content">
-					{/* <p className="text-signup">
-						Haven’t registered?{' '}
-						<Link to={`/sign_up`}>
-							<span style={{ color: '#3F9EEB' }}>Sign up</span>
-						</Link>
-					</p> */}
 					<div className=" text-center">
 						<p className="text-title">Local Government</p>
 						{!isWalletLogin && (
@@ -131,6 +129,10 @@ const Wallet = () => {
 								</Row>
 							</div>
 						)}
+						<p style={{ color: '#ffffff' }}>
+							To try out the system, get your credentials <a href='https://stage.cbdc-frontend.pages.dev' target="_blank" style={{ color: '#84BCEA' }}><u>here</u></a>. <br/>
+							<a href='https://stage.cbdc-frontend.pages.dev' target="_blank" style={{ color: '#ffffff' }}><u>Customer Support</u></a>
+						</p>
 					</div>
 					<p className="text-privacy">
 						<p className="text-copyright" style={{ color: '#ffffff' }}>
