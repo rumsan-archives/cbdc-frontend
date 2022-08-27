@@ -71,10 +71,10 @@ const Wallet = () => {
 			<Row style={{ height: '100vh' }}>
 				<Col className="left-content">
 					<div className="text-center">
-						<img src={g20Logo} width="400PX" alt="g20 logo"></img>
+						<img src={g20Logo} width="450PX" alt="g20 logo"></img>
 						<div style={{ width: '410px' }}>
 							<p className="description mt-4">
-								Disburse and transact retail CBDC (r/CBDC) to unbanked using low-tech devices for public allowance program. 							</p>
+								Disburse and transact retail CBDC (r/CBDC) to unbanked using low-tech devices for public allowance program. </p>
 						</div>
 					</div>
 						<p className="text-copyright mb-5" style={{ color: '#000000' }}>
