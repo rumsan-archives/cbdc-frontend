@@ -101,7 +101,7 @@ const Index = ({ params }) => {
 		e.preventDefault();
 		if (!selectedProject) return addToast('Please select program', TOAST.ERROR);
 		toggleVendorApproveModal();
-		togglePasscodeModal();
+		handleApproveVendor();
 	};
 
 	const handleApproveVendor = useCallback(async () => {
@@ -165,27 +165,6 @@ const Index = ({ params }) => {
 		[appSettings, getVendorBalance]
 	);
 
-	const fetchTokenIdsByProjects = useCallback(
-		async projects => {
-			const projectIds = projects.map(p => p._id);
-			const res = await getTokenIdsByProjects(projectIds);
-			return res;
-		},
-		[getTokenIdsByProjects]
-	);
-
-	const fetchVendorPackageBalance = useCallback(
-		async (wallet_address, tokenIds) => {
-			if (!appSettings) return;
-			const { agency } = appSettings;
-			const { rahat_erc1155 } = agency.contracts;
-			const wallet_addresses = Array(tokenIds.length).fill(wallet_address);
-			const package_balance = await getVendorPackageBalance(rahat_erc1155, wallet_addresses, tokenIds);
-			setVendorPackageBalance(package_balance);
-		},
-		[appSettings, getVendorPackageBalance]
-	);
-
 	const sanitizeSelectOptions = useCallback(projects => {
 		const select_options = projects.map(d => {
 			return { label: d.name, value: d._id };
@@ -204,12 +183,10 @@ const Index = ({ params }) => {
 			}
 
 			if (details && details.projects && details.projects.length) {
-				const tokenIds = await await fetchTokenIdsByProjects(details.projects);
 				const projects = details.projects.map(d => {
 					return { id: d._id, name: d.name };
 				});
 				setProjectList(projects);
-				await fetchVendorPackageBalance(details.wallet_address, tokenIds);
 			}
 			await fetchVendorBalance(details.wallet_address);
 		} catch (err) {
@@ -218,9 +195,7 @@ const Index = ({ params }) => {
 			setVendorBalance(0);
 		}
 	}, [
-		fetchTokenIdsByProjects,
 		fetchVendorBalance,
-		fetchVendorPackageBalance,
 		getVendorDetails,
 		id,
 		listProjects,
@@ -257,11 +232,11 @@ const Index = ({ params }) => {
 		fetchVendorTokenTransactions();
 	}, [fetchVendorTokenTransactions]);
 
-	useEffect(() => {
-		if (isVerified && wallet) {
-			handleApproveVendor();
-		}
-	}, [handleApproveVendor, isVerified, wallet]);
+	// useEffect(() => {
+	// 	if (isVerified && wallet) {
+	// 		handleApproveVendor();
+	// 	}
+	// }, [handleApproveVendor, isVerified, wallet]);
 
 	return (
 		<>

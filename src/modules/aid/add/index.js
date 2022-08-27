@@ -107,7 +107,7 @@ const AddProject = () => {
 			.then(res => {
 				setLoading(false);
 				addToast(`program created with ${res.uploaded_beneficiaries} beneficiary upload`, TOAST.SUCCESS);
-				History.push('/projects');
+				History.push('/programs');
 			})
 			.catch(err => {
 				setLoading(false);
@@ -116,7 +116,7 @@ const AddProject = () => {
 					addToast('program has been created', TOAST.SUCCESS);
 					err_msg = 'Upload failed due to duplicate data!';
 					addToast(err_msg, TOAST.ERROR);
-					History.push('/projects');
+					History.push('/programs');
 				} else addToast(err_msg, TOAST.ERROR);
 			});
 	};

@@ -97,13 +97,12 @@ export const VendorContextProvider = ({ children }) => {
 			if (!agency || !agency.contracts) return;
 			const { rahat: rahatContractAddr } = agency.contracts;
 			const res = await Service.approveVendor(wallet, payload, rahatContractAddr);
-			changeIsverified(false);
 			if (res) {
 				setVendor(res.data);
 				return res.data;
 			}
 		},
-		[appSettings, changeIsverified, wallet]
+		[appSettings, wallet]
 	);
 
 	// async function approveVendor(payload) {

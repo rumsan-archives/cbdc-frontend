@@ -38,7 +38,6 @@ export const AppContextProvider = ({ children }) => {
 	const [state, dispatch] = useReducer(appReduce, initialState);
 
 	const setWallet = useCallback(wallet => {
-		console.log({wallet})
 		dispatch({ type: ACTION.SET_WALLET, data: wallet });
 	}, []);
 
