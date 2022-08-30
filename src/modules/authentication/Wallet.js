@@ -130,7 +130,7 @@ const Wallet = () => {
 							</div>
 						)}
 						<p style={{ color: '#ffffff' }}>
-							To try out the system, get your credentials <a href='https://stage.cbdc-frontend.pages.dev' target="_blank" style={{ color: '#84BCEA' }}><u>here</u></a>. <br/>
+							To try out the system, get your credentials <a href='https://docs.google.com/document/d/1v2g-36pJK6QxJzynWIMw76dxXjmPI7F9Ipfi-4NgVu8/edit' target="_blank" style={{ color: '#84BCEA' }}><u>here</u></a>. <br/>
 							<a href='https://stage.cbdc-frontend.pages.dev' target="_blank" style={{ color: '#ffffff' }}><u>Customer Support</u></a>
 						</p>
 					</div>
