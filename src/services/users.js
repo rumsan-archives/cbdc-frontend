@@ -19,7 +19,7 @@ export async function dashboardStats() {
 			headers: { access_token }
 		});
 		return res.data;
-	} catch {}
+	} catch { }
 }
 
 export function verifyToken(token) {
@@ -101,7 +101,7 @@ export async function listUsers(params) {
 			params
 		});
 		return res.data;
-	} catch {}
+	} catch { }
 }
 
 export async function listUsersByRole(role) {
@@ -114,7 +114,7 @@ export async function listUsersByRole(role) {
 			}
 		});
 		return res.data;
-	} catch {}
+	} catch { }
 }
 
 export async function getUserById(userId) {
@@ -127,7 +127,7 @@ export async function getUserById(userId) {
 			}
 		});
 		return res.data;
-	} catch {}
+	} catch { }
 }
 
 export async function updateUser(userId, payload) {
@@ -221,4 +221,28 @@ async function saveRoleToBlockchain({ role, rahat, rahat_admin, wallet, wallet_a
 		await my_rahat_contract.addAdmin(wallet_address);
 		return my_admin_contract.addOwner(wallet_address);
 	}
+}
+
+export async function generateOTP(payload) {
+	try {
+		const res = await axios({
+			url: `${API.USERS}/otp_by_mail`,
+			method: 'post',
+			data: payload
+		});
+		return res.data;
+	} catch (e) {
+		console.log('Err', e);
+	}
+}
+
+export async function verifyOTP(payload) {
+	try {
+		const res = await axios({
+			url: `${API.USERS}/otp_verification`,
+			method: 'post',
+			data: payload
+		});
+		return res.data;
+	} catch { }
 }

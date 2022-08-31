@@ -32,6 +32,7 @@ const AidDetails = lazy(() => import('../modules/aid/detail'));
 const AddProject = lazy(() => import('../modules/aid/add'));
 const EditProject = lazy(() => import('../modules/aid/edit'));
 const addBudget = lazy(() => import('../modules/aid/detail/addBudget'));
+const addCampaign = lazy(() => import('../modules/aid/detail/addCampaign'));
 
 // Assets
 const AddAsset = lazy(() => import('../modules/asset/add'));
@@ -50,6 +51,8 @@ const KoboToolboxFormDetails = lazy(() => import('../modules/kobotool/forms/deta
 // Aid connect
 const AidConnectList = lazy(() => import('../modules/aid_connect/list'));
 const AidConnectCreateForm = lazy(() => import('../modules/aid_connect/create_forms'));
+
+const CampaignList = lazy(() => import('../modules/campaign'));
 
 // Reporting
 const Reporting = lazy(() => import('../modules/reporting'));
@@ -130,8 +133,8 @@ let AppRoutes = [
 	},
 
 	{
-		path: '/projects',
-		name: 'Projects',
+		path: '/programs',
+		name: 'Programs',
 		icon: 'layers',
 		component: AidList,
 		showInSidebar: true
@@ -166,6 +169,11 @@ let AppRoutes = [
 		path: '/add-budget/:projectId',
 		name: 'addBudget',
 		component: addBudget
+	},
+	{
+		path: '/add-campaign/:projectId',
+		name: 'addCampaign',
+		component: addCampaign
 	},
 
 	{
@@ -227,7 +235,7 @@ let AppRoutes = [
 		name: 'Mobilizers',
 		icon: 'git-merge',
 		component: Mobilizer,
-		showInSidebar: true
+		showInSidebar: false
 	},
 	{
 		path: '/add-mobilizers',
@@ -259,7 +267,7 @@ let AppRoutes = [
 		name: 'Financial Institutions',
 		icon: 'dollar-sign',
 		component: InstitutionList,
-		showInSidebar: true
+		showInSidebar: false
 	},
 	{
 		path: '/onboards',
@@ -314,7 +322,7 @@ let AppRoutes = [
 		path: '/dashboard',
 		name: 'Administration',
 		state: 'admin',
-		showInSidebar: false,
+		showInSidebar: true,
 		icon: 'lock',
 		child: [
 			// {
@@ -324,29 +332,23 @@ let AppRoutes = [
 			// 	icon: 'mdi mdi-adjust',
 			// 	component: Settings
 			// },
-			{
-				path: '/reporting',
-				name: 'Reporting',
-				icon: 'mdi mdi-adjust',
-				component: Reporting
-			},
+			// {
+			// 	path: '/reporting',
+			// 	name: 'Reporting',
+			// 	icon: 'mdi mdi-adjust',
+			// 	component: Reporting
+			// },
+			// {
+			// 	path: '/campaigns',
+			// 	name: 'Campaigns',
+			// 	icon: 'mdi mdi-adjust',
+			// 	component: CampaignList
+			// },
 			{
 				path: '/users',
 				name: 'Users',
 				icon: 'mdi mdi-adjust',
 				component: ListUsers
-			},
-			{
-				path: '/kobo-toolbox',
-				name: 'KoBoToolbox',
-				icon: 'mdi mdi-adjust',
-				component: ListKobotool
-			},
-			{
-				path: '/aid-connect',
-				name: 'Aid connect',
-				icon: 'mdi mdi-adjust',
-				component: AidConnectList
 			}
 		]
 	},

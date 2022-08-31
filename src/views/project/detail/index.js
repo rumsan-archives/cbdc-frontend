@@ -1,10 +1,7 @@
 import React from 'react';
 import { Breadcrumb, BreadcrumbItem, Row, Col } from 'reactstrap';
-
-import Balance from '../../balance';
 import DetailCard from '../../detailCard';
 import ProjectInfo from './projectInfo';
-import PieChart from './pieChart';
 import Tabs from './tab/index';
 
 const ProjectDetail = () => {
@@ -29,16 +26,11 @@ const ProjectDetail = () => {
 					/>
 				</Col>
 				<Col md="5">
-					<Balance title="Budget" button_name="Add Budget" data="50,000" label="Total Remaining Budget" />
 				</Col>
 			</Row>
-
 			<Row>
 				<Col md="7">
 					<ProjectInfo />
-				</Col>
-				<Col md="5">
-					<PieChart />
 				</Col>
 			</Row>
 			<Tabs />

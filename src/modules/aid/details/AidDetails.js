@@ -203,7 +203,7 @@ export default function AidDetails(props) {
 										<Loading />
 									) : (
 										<Button type="submit" color="primary">
-											Add Budget
+											Budget Settings
 										</Button>
 									)}
 								</InputGroupAddon>
@@ -227,7 +227,7 @@ export default function AidDetails(props) {
 								<Loading />
 							) : (
 								<Button type="submit" color="primary">
-									Add Budget
+									Budget Settings
 								</Button>
 							)}
 						</InputGroupAddon>

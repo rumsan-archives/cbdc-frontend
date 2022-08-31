@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState, useCallback } from 'react';
-import { Row, Col } from 'reactstrap';
+import { Row, Col, Tooltip } from 'reactstrap';
 import { useToasts } from 'react-toast-notifications';
 
 import { AidContext } from '../../../contexts/AidContext';
@@ -9,13 +9,16 @@ import ProjectInfo from './projectInfo';
 import PieChart from './pieChart';
 // import BarChart from './barChart';
 import Tabs from './tab';
-import { TOAST, PROJECT_STATUS } from '../../../constants';
+import { TOAST, PROJECT_STATUS, ROLES } from '../../../constants';
 import BreadCrumb from '../../ui_components/breadcrumb';
+import { getUser } from '../../../utils/sessionManager';
+import { useHistory } from 'react-router-dom';
+import API from '../../../constants/api';
 // import Balance from '../../ui_components/balance';
 
 export default function Index(props) {
 	const { id } = props.match.params;
-
+	const history = useHistory();
 	const { addToast } = useToasts();
 	const {
 		total_tokens,
@@ -33,15 +36,13 @@ export default function Index(props) {
 
 	const [projectDetails, setProjectDetails] = useState(null);
 	const [fetchingBlockchain, setFetchingBlockchain] = useState(false);
-	const [totalFiatBalance, setTotalFiatBalance] = useState(0);
-	const [totalRemainingFiatBalance,setTotalRemainingFiatBalance] = useState(0)
 
 	const handleStatusChange = status => {
 		const success_label = status === PROJECT_STATUS.CLOSED ? 'Closed' : 'Activated';
 		changeProjectStatus(id, status)
 			.then(d => {
 				setProjectDetails(d);
-				addToast(`Project has been ${success_label}`, TOAST.SUCCESS);
+				addToast(`Program has been ${success_label}`, TOAST.SUCCESS);
 			})
 			.catch(err => {
 				addToast(err.message, TOAST.ERROR);
@@ -67,17 +68,13 @@ export default function Index(props) {
 			const { rahat_admin } = agency.contracts;
 			await getProjectCapital(id, rahat_admin);
 			await getAidBalance(id, rahat_admin);
-			const res = await getProjectPackageBalance(id, rahat_admin);
-			console.log({ res });
-			setTotalFiatBalance(res.projectCapital.grandTotal || 0);
-			setTotalRemainingFiatBalance(res.remainingBalance.grandTotal || 0)
 		} catch (err) {
 			console.log(err);
 			addToast(err.message, TOAST.ERROR);
 		} finally {
 			setFetchingBlockchain(false);
 		}
-	}, [addToast, appSettings, getAidBalance, getProjectCapital, id, getProjectPackageBalance]);
+	}, [addToast, appSettings, getAidBalance, getProjectCapital, id]);
 
 	useEffect(fetchProjectDetails, []);
 
@@ -85,21 +82,26 @@ export default function Index(props) {
 		fetchPackageAndTokenBalance();
 	}, [fetchPackageAndTokenBalance]);
 
+
 	return (
 		<>
-			<p className="page-heading">Projects</p>
-			<BreadCrumb redirect_path="projects" root_label="Projects" current_label="Details" />
+			<Row>
+				<Col md="9">
+					<p className="page-heading">Program</p>
+					<BreadCrumb redirect_path="projects" root_label="Programs" current_label="Details" />
+				</Col>
+			</Row>
 			<Row>
 				<Col md="7">
 					{projectDetails && (
 						<DetailsCard
 							fetching={fetchingBlockchain}
-							title="Project Details"
+							title="Program Details"
 							button_name="Generate QR Code"
-							name="Project Name"
+							name="Program Name"
 							name_value={projectDetails.name}
 							status={projectDetails.status}
-							total="Project Budget"
+							total="Program Budget"
 							total_value={total_tokens}
 							handleStatusChange={handleStatusChange}
 						/>
@@ -112,26 +114,13 @@ export default function Index(props) {
 							fetching={fetchingBlockchain}
 							available_tokens={available_tokens}
 							total_tokens={total_tokens}
-							total_package={totalFiatBalance}
-							available_package = {totalRemainingFiatBalance}
 							projectStatus={projectDetails.status}
 							projectId={id}
+							enableBudgetAdd={projectDetails.allocations.length === 0}
 						/>
 					)}
 
-					{/* {projectDetails && (
-						<Balance
-							action=""
-							title="Balance"
-							button_name="Add Budget"
-							token_data={available_tokens}
-							package_data={totalFiatBalance}
-							fetching={fetchingBlockchain}
-							loading={loading}
-							projectStatus={projectDetails.status}
-							projectId={id}
-						/>
-					)} */}
+					
 				</Col>
 			</Row>
 

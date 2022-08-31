@@ -2,7 +2,22 @@ import ACTION from '../actions/aid';
 
 export default (state, action) => {
 	const result = action.res;
+
 	switch (action.type) {
+
+		case `${ACTION.SET_DISBURSEMENT_DATA}`:
+			return {
+				...state,
+				disbursementData:{
+					disbursementAmount:result.disbursementAmount,
+					disbursementFrequency:result.disbursementFrequency,
+					startDate:result.startDate,
+					endDate:result.endDate,
+					totalDisbursementAmount:result.totalDisbursementAmount
+				}
+				
+			}
+
 		case `${ACTION.LIST_AID_SUCCESS}`:
 			return {
 				...state,

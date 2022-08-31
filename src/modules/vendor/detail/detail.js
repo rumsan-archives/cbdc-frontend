@@ -19,7 +19,7 @@ import { VENDOR_STATUS, STATUS_ACTIONS } from '../../../constants';
 import ModalWrapper from '../../global/CustomModal';
 import SelectWrapper from '../../global/SelectWrapper';
 import StatusBox from './statusBox';
-import {getBalance} from '../../../blockchain/abi';
+import { getBalance } from '../../../blockchain/abi';
 
 const IPFS_GATEWAY = process.env.REACT_APP_IPFS_GATEWAY;
 
@@ -61,7 +61,6 @@ const Index = ({ params }) => {
 	const [inputStatus, setInputStatus] = useState('');
 	const [vendorEtherBalance, setVendorEtherBalance] = useState(null);
 
-
 	const toggleVendorApproveModal = () => setVendorApproveModal(!vendorApproveModal);
 	// END WIP
 
@@ -85,7 +84,7 @@ const Index = ({ params }) => {
 
 	const handleAddprojectSubmit = async e => {
 		e.preventDefault();
-		if (!selectedProject) return addToast('Please select project', TOAST.ERROR);
+		if (!selectedProject) return addToast('Please select program', TOAST.ERROR);
 		try {
 			await addVendorToProject(id, selectedProject);
 			addToast('Vendor added to the project', TOAST.SUCCESS);
@@ -100,9 +99,9 @@ const Index = ({ params }) => {
 
 	const submitApproveProject = e => {
 		e.preventDefault();
-		if (!selectedProject) return addToast('Please select project', TOAST.ERROR);
+		if (!selectedProject) return addToast('Please select program', TOAST.ERROR);
 		toggleVendorApproveModal();
-		togglePasscodeModal();
+		handleApproveVendor();
 	};
 
 	const handleApproveVendor = useCallback(async () => {
@@ -166,27 +165,6 @@ const Index = ({ params }) => {
 		[appSettings, getVendorBalance]
 	);
 
-	const fetchTokenIdsByProjects = useCallback(
-		async projects => {
-			const projectIds = projects.map(p => p._id);
-			const res = await getTokenIdsByProjects(projectIds);
-			return res;
-		},
-		[getTokenIdsByProjects]
-	);
-
-	const fetchVendorPackageBalance = useCallback(
-		async (wallet_address, tokenIds) => {
-			if(!appSettings) return;
-			const {agency} = appSettings;
-			const { rahat_erc1155 } = agency.contracts;
-			const wallet_addresses = Array(tokenIds.length).fill(wallet_address);
-			const package_balance = await getVendorPackageBalance(rahat_erc1155, wallet_addresses, tokenIds);
-			setVendorPackageBalance(package_balance);
-		},
-		[appSettings, getVendorPackageBalance]
-	);
-
 	const sanitizeSelectOptions = useCallback(projects => {
 		const select_options = projects.map(d => {
 			return { label: d.name, value: d._id };
@@ -205,12 +183,10 @@ const Index = ({ params }) => {
 			}
 
 			if (details && details.projects && details.projects.length) {
-				const tokenIds = await await fetchTokenIdsByProjects(details.projects);
 				const projects = details.projects.map(d => {
 					return { id: d._id, name: d.name };
 				});
 				setProjectList(projects);
-				await fetchVendorPackageBalance(details.wallet_address, tokenIds);
 			}
 			await fetchVendorBalance(details.wallet_address);
 		} catch (err) {
@@ -219,9 +195,7 @@ const Index = ({ params }) => {
 			setVendorBalance(0);
 		}
 	}, [
-		fetchTokenIdsByProjects,
 		fetchVendorBalance,
-		fetchVendorPackageBalance,
 		getVendorDetails,
 		id,
 		listProjects,
@@ -250,7 +224,6 @@ const Index = ({ params }) => {
 	// 	}
 	// }, [getVendorTransactions, id]);
 
-
 	useEffect(() => {
 		fetchVendorDetails();
 	}, [fetchVendorDetails]);
@@ -259,11 +232,11 @@ const Index = ({ params }) => {
 		fetchVendorTokenTransactions();
 	}, [fetchVendorTokenTransactions]);
 
-	useEffect(() => {
-		if (isVerified && wallet) {
-			handleApproveVendor();
-		}
-	}, [handleApproveVendor, isVerified, wallet]);
+	// useEffect(() => {
+	// 	if (isVerified && wallet) {
+	// 		handleApproveVendor();
+	// 	}
+	// }, [handleApproveVendor, isVerified, wallet]);
 
 	return (
 		<>
@@ -271,18 +244,18 @@ const Index = ({ params }) => {
 
 			{/* Add to project modal */}
 			<ModalWrapper
-				title="Add to project"
+				title="Add to Program"
 				open={addProjectModal}
 				toggle={toggleAddProjectModal}
 				handleSubmit={handleAddprojectSubmit}
 			>
 				<FormGroup>
-					<Label>Project *</Label>
+					<Label>Program *</Label>
 					<SelectWrapper
 						onChange={handleProjectChange}
 						maxMenuHeight={150}
 						data={allProjects}
-						placeholder="--Select Project--"
+						placeholder="--Select Program--"
 					/>{' '}
 				</FormGroup>
 			</ModalWrapper>
@@ -290,7 +263,7 @@ const Index = ({ params }) => {
 
 			{/* Assign to vendor and approve modal */}
 			<ModalWrapper
-				title="Add to project"
+				title="Add to Program"
 				open={vendorApproveModal}
 				toggle={toggleVendorApproveModal}
 				handleSubmit={submitApproveProject}
@@ -301,7 +274,7 @@ const Index = ({ params }) => {
 						onChange={handleProjectChange}
 						maxMenuHeight={150}
 						data={allProjects}
-						placeholder="--Select Project--"
+						placeholder="--Select Program--"
 					/>{' '}
 				</FormGroup>
 			</ModalWrapper>

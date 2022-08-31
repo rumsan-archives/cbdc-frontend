@@ -9,7 +9,7 @@ export default function ProjectInvovled(props) {
 			<Card>
 				<div className="stat-card-body" style={{ minHeight: 120 }}>
 					<CardTitle className="title" style={{ flexBasis: '90%' }}>
-						Projects Involved
+						Program Involved
 					</CardTitle>
 					<div style={{ display: 'flex', justifyContent: 'space-between' }}>
 						<div style={{ flexBasis: '50%' }}>
@@ -26,7 +26,7 @@ export default function ProjectInvovled(props) {
 										</button>
 									))
 								) : (
-									<p style={{ color: '#2B7EC1' }}>No projects involved</p>
+									<p style={{ color: '#2B7EC1' }}>No Program involved</p>
 								)}
 							</div>
 						</div>

@@ -12,6 +12,7 @@ import {
 	generateSignaturesWithInterface
 } from '../blockchain/abi';
 import { CURRENCY } from '../constants';
+import { dateToSeconds } from '../utils';
 
 const access_token = getUserToken();
 const abiCoder = new ethers.utils.AbiCoder();
@@ -88,6 +89,34 @@ export async function addProjectBudget(wallet, projectId, supplyToken, contract_
 	let d = await res.wait();
 	if (d) {
 		await tokenAllocate(projectId, supplyToken, d.transactionHash);
+		let project = await changeProjectStatus(projectId, 'active');
+		return project;
+	}
+}
+
+export async function allocateProjectBudget(wallet, projectId,disbursementData, contract_addr) {
+	const contract = await getContractByProvider(contract_addr, CONTRACT.Admin);
+	const signerContract = contract.connect(wallet);
+	console.log(signerContract)
+	//     uint256 _disbursementAmount,
+    // uint256 _disbursementFrequency,
+    // uint256 _startDate,
+    // uint256 _endDate,
+    // uint256 _totalAmount
+	const res = await signerContract.setProjectBudget_ERC20(
+		projectId,
+		Number(disbursementData.disbursementAmount),
+		Number(disbursementData.disbursementFrequency),
+		dateToSeconds(disbursementData.startDate),
+		dateToSeconds(disbursementData.endDate),
+		Number(disbursementData.totalDisbursementAmount)
+		 );
+
+	
+	let d = await res.wait();
+	console.log(d)
+	if (d) {
+		await tokenAllocate(projectId, disbursementData.totalDisbursementAmount, d.transactionHash);
 		let project = await changeProjectStatus(projectId, 'active');
 		return project;
 	}

@@ -35,12 +35,12 @@ export const BeneficiaryContextProvider = ({ children }) => {
 		[appSettings, changeIsverified]
 	);
 
-	const getBeneficiaryBalance = useCallback(async (phone, contract_address) => {
-		return Service.getBeneficiaryBalance(phone, contract_address);
+	const getBeneficiaryBalance = useCallback(async (projectId,phone, contract_address) => {
+		return Service.getBeneficiaryBalance(projectId,phone, contract_address);
 	}, []);
 
-	const getBeneficiariesBalances = useCallback(async (phone, contract_address) => {
-		return Service.getBeneficiariesBalances(phone, contract_address);
+	const getBeneficiariesBalances = useCallback(async (projectId,phone, contract_address) => {
+		return Service.getBeneficiariesBalances(projectId,phone, contract_address);
 	}, []);
 
 	const getBenfPackageBalance = useCallback((phone, contract_address) => {

@@ -42,7 +42,7 @@ export default function Balance(props) {
 						<Col>
 							<CardTitle className="title">{title || 'No Title'}</CardTitle>
 						</Col>
-						<Col>
+						{/* <Col>
 							{loading ? (
 								<Loading />
 							) : button_name ? (
@@ -57,17 +57,17 @@ export default function Balance(props) {
 							) : (
 								''
 							)}
-						</Col>
+						</Col> */}
 					</Row>
 					<Row>
 						<Col>
 							{fetching ? <Loading /> : <p className="card-font-bold">{formatBalanceAndCurrency(token_data) || '0'}</p>}
 
 							<div style={{ marginTop: 0 }} className="sub-title">
-								Tokens
+								Tokens Remaining
 							</div>
 						</Col>
-						<Col>
+						{/* <Col>
 							{fetching ? (
 								<Loading />
 							) : (
@@ -81,7 +81,7 @@ export default function Balance(props) {
 							<div style={{ marginTop: 0 }} className="sub-title">
 								Package
 							</div>
-						</Col>
+						</Col> */}
 					</Row>
 				</div>
 			</Card>

@@ -16,7 +16,7 @@ export default function PrejctsByStatus({ mobilizerProjects, handleApproveReject
 			<Card>
 				<div className="stat-card-body" style={{ minHeight: 120 }}>
 					<CardTitle className="title" style={{ flexBasis: '90%' }}>
-						Projects Involved
+						Program Involved
 					</CardTitle>
 
 					<Table className="no-wrap v-middle" responsive>

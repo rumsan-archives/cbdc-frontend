@@ -5,6 +5,7 @@ import appReduce from '../reducers/appSettingsReducer';
 import ACTION from '../actions/appSettings';
 import DataService from '../services/db';
 import { BALANCE_TABS } from '../constants';
+import WalletUtil from '../utils/blockchain/wallet';
 
 const initialState = {
 	settings: {
@@ -36,12 +37,19 @@ export const AppContext = createContext(initialState);
 export const AppContextProvider = ({ children }) => {
 	const [state, dispatch] = useReducer(appReduce, initialState);
 
+	const setWallet = useCallback(wallet => {
+		dispatch({ type: ACTION.SET_WALLET, data: wallet });
+	}, []);
+
 	const initApp = useCallback(async () => {
 		let data = await DataService.initAppData();
 		data.hasWallet = data.wallet === null ? false : true;
 		if (!data.hasWallet) localStorage.removeItem('address');
+		const privateKey = await DataService.get('privateKey');
+		let wlt = await WalletUtil.loadFromPrivateKey(privateKey)
 		dispatch({ type: ACTION.INIT_APP, data });
-	}, [dispatch]);
+		setWallet(wlt);
+	}, [dispatch,setWallet]);
 
 	// const getAppSettings=useCallback(()=> {
 	// 	return new Promise((resolve, reject) => {
@@ -83,9 +91,6 @@ export const AppContextProvider = ({ children }) => {
 		dispatch({ type: ACTION.SET_HASWALLET, data: hasWallet });
 	}
 
-	const setWallet = useCallback(wallet => {
-		dispatch({ type: ACTION.SET_WALLET, data: wallet });
-	}, []);
 
 	const changeIsverified = useCallback(boolArg => {
 		dispatch({ type: ACTION.CHANGE_ISVERIFIED, data: boolArg });

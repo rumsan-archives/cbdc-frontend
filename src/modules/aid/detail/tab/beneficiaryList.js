@@ -62,25 +62,23 @@ const List = ({ projectId }) => {
 		hiddenFileInput.current.click();
 	};
 
-		const appendBeneficiaryBalances = useCallback(({beneficiaries,balances}) => {
-		const beneficiariesWithTokens = beneficiaries.map((ben,i) => {
+	const appendBeneficiaryBalances = useCallback(({ beneficiaries, balances }) => {
+		const beneficiariesWithTokens = beneficiaries.map((ben, i) => {
 			ben.tokenBalance = balances[i]
 			return ben;
 		})
 		setBenList(beneficiariesWithTokens);
 		setfetchingBeneficiaryTokens(false);
 
-	},[])
+	}, [])
 
-	const fetchBeneficiariesBalances = useCallback(async({beneficiaries}) => {
-		console.log({beneficiaries})
-		if(!appSettings || !appSettings.agency || !appSettings.agency.contracts) return;
+	const fetchBeneficiariesBalances = useCallback(async ({ beneficiaries }) => {
+		if (!appSettings || !appSettings.agency || !appSettings.agency.contracts) return;
 		const { agency } = appSettings
 		setfetchingBeneficiaryTokens(true);
-		const balances = await getBeneficiariesBalances(beneficiaries,agency.contracts.rahat);
-		console.log({balances})
-		if(balances.length) await appendBeneficiaryBalances({beneficiaries,balances})
-	},[appSettings,getBeneficiariesBalances,appendBeneficiaryBalances])
+		const balances = await getBeneficiariesBalances(projectId,beneficiaries, agency.contracts.rahat);
+		if (balances.length) await appendBeneficiaryBalances({ beneficiaries, balances })
+	}, [appSettings, getBeneficiariesBalances, appendBeneficiaryBalances])
 
 	const handleUploadListSubmit = async e => {
 		e.preventDefault();
@@ -164,9 +162,9 @@ const List = ({ projectId }) => {
 			const data = await beneficiaryByAid(projectId, query);
 			setBenList(data.data);
 			console.log(data.data)
-			fetchBeneficiariesBalances({beneficiaries:data.data})
+			fetchBeneficiariesBalances({ beneficiaries: data.data })
 		},
-		[beneficiaryByAid, projectId,fetchBeneficiariesBalances]
+		[beneficiaryByAid, projectId, fetchBeneficiariesBalances]
 	);
 
 	const convertQrToImg = async data => {
@@ -314,7 +312,7 @@ const List = ({ projectId }) => {
 			<div>
 				<div className="row">
 					<div style={{ flex: 1, padding: 10 }}>
-						<button
+						{/* <button
 							onClick={() => toggleAmountModal(ACTION.BULK_ISSUE)}
 							type="button"
 							className="btn waves-effect waves-light btn-outline-info"
@@ -329,7 +327,7 @@ const List = ({ projectId }) => {
 							style={{ borderRadius: '8px' }}
 						>
 							Bulk Generate QR Code
-						</button>
+						</button> */}
 					</div>
 					<div style={{ padding: 10, float: 'right' }}>
 						<button

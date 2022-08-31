@@ -88,14 +88,14 @@ export default function ProjectInfo({ projectDetails }) {
 						</Col>
 						<Col>
 							<div style={{ flex: 1, padding: 2, float: 'right' }}>
-								<button
+								{/* <button
 									onClick={toggleQrGen}
 									type="button"
 									className="btn waves-effect waves-light btn-outline-info"
 									style={{ borderRadius: '8px', marginRight: '20px' }}
 								>
 									Pre-Generate Qr code
-								</button>
+								</button> */}
 								<button
 									type="button"
 									onClick={handleEditClick}
@@ -113,7 +113,7 @@ export default function ProjectInfo({ projectDetails }) {
 								<p className="card-font-medium">
 									{project_manager ? `${project_manager.name.first} ${project_manager.name.last}` : '-'}
 								</p>
-								<div className="sub-title">Project Manager</div>
+								<div className="sub-title">Program Manager</div>
 							</div>
 							<div style={{ marginBottom: '25px' }}>
 								<p className="card-font-medium">{location || '-'}</p>

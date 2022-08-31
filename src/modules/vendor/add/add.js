@@ -157,13 +157,13 @@ const Add = () => {
 									</Col>
 								</Row>
 								<FormGroup>
-									<Label>Project</Label>
+									<Label>Program</Label>
 									<SelectWrapper
 										multi={true}
 										onChange={handleProjectChange}
 										maxMenuHeight={150}
 										data={projectList}
-										placeholder="--Select Project--"
+										placeholder="--Select Program--"
 									/>
 								</FormGroup>
 								<FormGroup>

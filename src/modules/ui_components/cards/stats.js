@@ -23,7 +23,7 @@ export default function Stats(props) {
 						</h2>
 					</div>
 					<div style={{ marginTop: 0 }} className="sub-title">
-						Total {title}
+						{props.subTitle || 'No Sub Title'}
 					</div>
 				</div>
 				{/* <div className="earningsbox mt-1"></div> */}

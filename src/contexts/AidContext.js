@@ -31,7 +31,16 @@ const initialState = {
 	total_tokens: 0,
 	available_tokens: 0,
 	aid_details: null,
-	loading: false
+	loading: false,
+	disbursementData:{
+			disbursementAmount:0,
+			disbursementFrequency:0,
+			startDate:0,
+			endDate:0,
+			totalDisbursementAmount:0
+	}
+
+
 };
 
 export const AidContext = createContext(initialState);
@@ -59,6 +68,16 @@ export const AidContextProvider = ({ children }) => {
 		},
 		[changeIsverified]
 	);
+
+	const allocateProjectBudget = (wallet,projectId,contract_addr) => {
+		console.log({wallet,projectId,disbursement:state.disbursementData,contract_addr})
+		return Service.allocateProjectBudget(wallet,projectId,state.disbursementData,contract_addr)
+		
+	}
+
+	const setDisbursementData = (res) => {
+		dispatch({type:ACTION.SET_DISBURSEMENT_DATA,res})
+	};
 
 	async function changeProjectStatus(aidId, status) {
 		let res = await Service.changeProjectStatus(aidId, status);
@@ -178,10 +197,10 @@ export const AidContextProvider = ({ children }) => {
 		[changeIsverified]
 	);
 	const sendTokenIssuedSms = useCallback(async (phone, token) => {
-		return SmsService.sendTokenIssuedSms({ phone, token });
+		return SmsService.sendTokenIssuedSms({ phone:phone.toString(), token:token.toString() });
 	}, []);
 	const sendPackageIssuedSms = useCallback(async (phone, packageName) => {
-		return SmsService.sendPackageIssuedSms({ phone, packageName });
+		return SmsService.sendPackageIssuedSms({ phone:phone.toString(), packageName });
 	}, []);
 
 	const suspendBeneficiaryToken = useCallback(
@@ -242,6 +261,9 @@ export const AidContextProvider = ({ children }) => {
 				aid_details: state.aid_details,
 				available_tokens: state.available_tokens,
 				total_tokens: state.total_tokens,
+				disbursementData:state.disbursementData,
+				allocateProjectBudget,
+				setDisbursementData,
 				uploadBenfToProject,
 				listMobilizersByProject,
 				sendTokenIssuedSms,

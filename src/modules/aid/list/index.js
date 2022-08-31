@@ -74,28 +74,8 @@ const List = () => {
 		}
 	};
 
-	const appendProjectBalances = useCallback(({ projects, balances }) => {
-		const projectsWithBalances = projects.map((el, i) => {
-			el.tokenBalance = balances.projectBalances[i];
-			el.packageBalances = balances.packageBalances[i].grandTotal;
-			return el;
-		});
-		setProjectList(projectsWithBalances);
-		setFetchingPackageBalances(false);
-	}, []);
 
-	const fetchProjectsBalances = useCallback(
-		async projects => {
-			if (!appSettings || !appSettings.agency) return;
-			const { agency } = appSettings;
-			if (!agency && !agency.contracts) return;
-			setFetchingPackageBalances(true);
-			const projectIds = projects.map(el => el._id);
-			const balances = await getProjectsBalances(projectIds, agency.contracts.rahat, agency.contracts.rahat_admin);
-			if (balances) await appendProjectBalances({ projects, balances });
-		},
-		[getProjectsBalances, appSettings, appendProjectBalances]
-	);
+
 
 	const onPageChanged = useCallback(
 		async paginationData => {
@@ -107,10 +87,11 @@ const List = () => {
 			let start = (currentPage - 1) * pageLimit;
 			const query = { start, limit: PAGE_LIMIT, ...params };
 			const { data } = await listAid(query);
+						console.log({data})
 			setProjectList(data);
-			fetchProjectsBalances(data);
+			
 		},
-		[listAid, projectStatus, searchName, fetchProjectsBalances]
+		[listAid, projectStatus, searchName]
 	);
 
 	const loadAidList = useCallback(
@@ -125,6 +106,7 @@ const List = () => {
 	const fetchTotalRecords = useCallback(async () => {
 		try {
 			const data = await listAid({ start: 0, limit: PAGE_LIMIT });
+
 			setTotalRecords(data.total);
 		} catch (err) {
 			addToast('Something went wrong!', {
@@ -160,7 +142,7 @@ const List = () => {
 			</AidModal>
 			<Card>
 				<CardTitle className="mb-0 pt-3">
-					<span style={{ paddingLeft: 26 }}>Projects</span>
+					<span style={{ paddingLeft: 26 }}>Programs</span>
 				</CardTitle>
 				<CardTitle className="mb-0 p-3">
 					<div className="toolbar-flex-container">
@@ -203,10 +185,9 @@ const List = () => {
 								<th className="border-0">S.N.</th>
 								<th className="border-0">Name</th>
 								<th className="border-0">Location</th>
-								<th className="border-0">Project Manager</th>
-								<th className="border-0">Created Date</th>
+								{/* <th className="border-0">Created Date</th> */}
 								<th className="border-0">Status</th>
-								<th className="border-0">Balance</th>
+								<th className="border-0">Allocated Token</th>
 								<th className="border-0">Action</th>
 							</tr>
 						</thead>
@@ -216,23 +197,24 @@ const List = () => {
 									return (
 										<tr key={d._id}>
 											<td>{(currentPage - 1) * PAGE_LIMIT + i + 1}</td>
-											<td>{dottedString(d.name)}</td>
-											<td>{dottedString(d.location)}</td>
 											<td>
-												{d.project_manager ? `${d.project_manager.name.first} ${d.project_manager.name.last}` : '-'}
+												<div className="d-flex no-block align-items-center">
+													<div className="">
+														<h5 className="mb-0 font-16 font-medium">{dottedString(d.name)}</h5>
+														<span>{moment(d.created_at).format('MMM Do YYYY')}</span>
+													</div>
+												</div>
 											</td>
-											<td>{moment(d.created_at).format('MMM Do YYYY')}</td>
+
+											<td>{dottedString(d.location)}</td>
+											{/* <td>{moment(d.created_at).format('MMM Do YYYY')}</td> */}
 											<td>{d.status === 'closed' ? 'COMPLETED' : d.status.toUpperCase()}</td>
 											<td>
-												{fetchingPackageBalances ? (
-													<MiniSpinner />
-												) : (
+												{
 													<>
-														<span className="badge badge-success p-2 mb-1">{d.tokenBalance || 0} Tokens</span>
-														<br />
-														<span className="badge bg-light text-dark p-2">Rs. {d.packageBalances || 0} Packages</span>
+														<span className="badge badge-success p-2 mb-1">{d?.allocations[0]?.amount? d.allocations[0].amount: 0} </span>
 													</>
-												)}
+												}
 											</td>
 											<td className="blue-grey-text  text-darken-4 font-medium">
 												<Link to={`/projects/${d._id}`}>

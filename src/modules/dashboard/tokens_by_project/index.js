@@ -48,10 +48,15 @@ const Index = props => {
 
 	let bar_labels = [];
 	let bar_data = [];
+	console.log({ data });
 
 	if (data && data.length) {
 		bar_labels = [];
-		for (let d of data) {
+		let barData = data;
+		if (data.length > 5) {
+			barData = data.slice(0, 5);
+		}
+		for (let d of barData) {
 			bar_labels.push(d.name);
 			bar_data.push(d.token);
 		}
@@ -65,7 +70,7 @@ const Index = props => {
 			<Card>
 				<CardBody>
 					<div style={{ display: 'flex', justifyContent: 'space-between' }}>
-						<CardTitle>Tokens by project</CardTitle>
+						<CardTitle>Programs With Total Allocated CBDC</CardTitle>
 						<div>
 							{exportData.length ? <ExportToExcel apiData={exportData} fileName="Tokens-by-project-report.xlsx" /> : ''}
 						</div>

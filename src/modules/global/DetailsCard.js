@@ -53,14 +53,15 @@ export default function DetailsCard(props) {
 										onChange={handleSwitchChange}
 									/>
 								) : (
-									<button
-										onClick={handleButtonClick}
-										type="button"
-										className="btn waves-effect waves-light btn-outline-info"
-										style={{ borderRadius: '8px' }}
-									>
-										{button_name || 'button'}
-									</button>
+									''
+									// <button
+									// 	onClick={handleButtonClick}
+									// 	type="button"
+									// 	className="btn waves-effect waves-light btn-outline-info"
+									// 	style={{ borderRadius: '8px' }}
+									// >
+									// 	{button_name || 'button'}
+									// </button>
 								)}
 							</div>
 						</Col>
@@ -83,15 +84,16 @@ export default function DetailsCard(props) {
 								</div>
 							</div>
 						</Col>
-						<Col md="4" sm="12">
+						{total?(<Col md="4" sm="12">
 							{fetching ? (
 								<Loading />
 							) : (
-								<p className="card-font-bold">{formatBalanceAndCurrency(total_value) || '0'}</p>
+								<p className="card-font-bold">{formatBalanceAndCurrency(total_value) || ''}</p>
 							)}
 
-							<div className="sub-title">{total || 'No Label'}</div>
-						</Col>
+							<div className="sub-title">{total || ''}</div>
+						</Col>):('')}
+						
 					</Row>
 				</div>
 			</Card>

@@ -97,13 +97,12 @@ export const VendorContextProvider = ({ children }) => {
 			if (!agency || !agency.contracts) return;
 			const { rahat: rahatContractAddr } = agency.contracts;
 			const res = await Service.approveVendor(wallet, payload, rahatContractAddr);
-			changeIsverified(false);
 			if (res) {
 				setVendor(res.data);
 				return res.data;
 			}
 		},
-		[appSettings, changeIsverified, wallet]
+		[appSettings, wallet]
 	);
 
 	// async function approveVendor(payload) {
@@ -219,6 +218,10 @@ export const VendorContextProvider = ({ children }) => {
 	const getTotalVendorsBalances = useCallback((contract_address, vendorAddresses) => {
 		return Service.getTotalVendorsBalances(contract_address, vendorAddresses);
 	}, []);
+	const getVendorReport = async params => {
+		const data = await Service.getVendorReport();
+		return data;
+	};
 
 	return (
 		<VendorContext.Provider
@@ -251,7 +254,8 @@ export const VendorContextProvider = ({ children }) => {
 				getVendorTransactions,
 				getVendorsBalances,
 				getVendorPackageTx,
-				getTotalVendorsBalances
+				getTotalVendorsBalances,
+				getVendorReport
 			}}
 		>
 			{children}

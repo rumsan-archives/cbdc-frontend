@@ -38,7 +38,7 @@ const Tabs = ({ projectId }) => {
 								Vendors
 							</NavLink>
 						</NavItem>
-						<NavItem>
+						{/* <NavItem>
 							<NavLink
 								className={classnames({ active: activeTab === '3' })}
 								onClick={() => {
@@ -47,7 +47,7 @@ const Tabs = ({ projectId }) => {
 							>
 								Mobilizers
 							</NavLink>
-						</NavItem>
+						</NavItem> */}
 					</Nav>
 					<TabContent className="pt-4" activeTab={activeTab}>
 						<TabPane tabId="1">

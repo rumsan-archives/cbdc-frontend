@@ -193,7 +193,7 @@ const Vendor = () => {
 									<th className="border-0">Status</th>
 									<th className="border-0">Phone</th>
 									<th className="border-0">Address</th>
-									<th className="border-0">Registration Date </th>
+									{/* <th className="border-0">Registration Date </th> */}
 									<th className="border-0">Balance </th>
 									<th className="border-0">Action</th>
 								</tr>
@@ -210,7 +210,8 @@ const Vendor = () => {
 													</div>
 													<div className="">
 														<h5 className="mb-0 font-16 font-medium">{dottedString(e.name)}</h5>
-														<span>{e.email ? e.email : '-'}</span>
+														<span>{moment(e.created_at).format('MMM Do YYYY')}</span>
+														{/* <span>{e.email ? e.email : '-'}</span> */}
 													</div>
 												</div>
 											</td>
@@ -218,7 +219,7 @@ const Vendor = () => {
 											<td>{e.phone}</td>
 
 											<td>{dottedString(e.address)}</td>
-											<td>{moment(e.created_at).format('MMM Do YYYY')}</td>
+											{/* <td>{moment(e.created_at).format('MMM Do YYYY')}</td> */}
 											<td>
 												{fetchingVendorBalances ? (
 													<MiniSpinner />
